@@ -7,7 +7,7 @@ import Background from "../../atomic/atoms/background";
 import Text from "../../atomic/atoms/text";
 
 import Bg from '../../assets/background/splashSuccess.png'
-import Button from "../../atomic/atoms/button";
+import Button from "../../atomic/molecules/button";
 
 import Check from '../../assets/vectors/correct.png'
 

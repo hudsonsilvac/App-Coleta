@@ -7,7 +7,7 @@ import Background from "../../atomic/atoms/background";
 import Text from "../../atomic/atoms/text";
 
 import Bg from '../../assets/background/splashHome.png'
-import Button from "../../atomic/atoms/button";
+import Button from "../../atomic/molecules/button";
 
 const Login: React.FC = () => {
     return (
