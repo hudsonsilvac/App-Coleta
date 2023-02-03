@@ -13,7 +13,7 @@ const BoxValue: React.FC<IndexProps> = ({
     return (
         <Main>
             <Box value={{ state: value.state}}>
-                <Text type='H4' text={value.description} color={white} />
+                <Text type='H4' text={value.description} color={white} weight='700' />
             </Box>
             <Text type='H4' text={text} ml='10px' />
         </Main>
