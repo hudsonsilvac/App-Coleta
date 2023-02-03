@@ -6,10 +6,10 @@ import Main from "../../../atomic/atoms/main";
 import Background from "../../../atomic/atoms/background";
 import Text from "../../../atomic/atoms/text";
 
-import Bg from '../../assets/background/splashSuccess.png'
+import Bg from '../../../assets/background/splashSuccess.png'
 import Button from "../../../atomic/molecules/button";
 
-import Check from '../../assets/vectors/correct.png'
+import Check from '../../../assets/vectors/correct.png'
 
 import { Correct } from "./style";
 
