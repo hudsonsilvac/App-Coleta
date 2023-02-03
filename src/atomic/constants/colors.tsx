@@ -5,7 +5,7 @@ export const success = '#5FC85F'
 export const warning = '#F63B3B';
 
 export const white = '#FFF';
-export const gray = '#7E7E7E';
+export const gray = '#606060';
 export const grey = '#F5F5F5';
 export const blackGrey = '#D1D1D1';
 export const black = '#282F37';
