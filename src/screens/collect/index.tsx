@@ -49,10 +49,6 @@ const Items: ItemType[] = [
 const Collect: React.FC = () => {
     const [items, setItems] = useState<ItemType[]>(Items)
 
-    useEffect(() => {
-        console.log(items)
-    }, [items])
-
     return (
         <Main>
             <Background source={Bg} small justifyContent='space-between'>
