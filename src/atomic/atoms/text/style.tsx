@@ -23,7 +23,7 @@ export const H1 = styled.Text`
 export const H2 = styled.Text`
     font-family: 'LexendDeca-Regular';
     font-size: 40px;
-    font-weight: ${( props: TextWeightStyledProps ) => ( props.weight ?? '600' )};
+    font-weight: ${( props: TextWeightStyledProps ) => ( props.weight ?? '700' )};
     color: ${( props: IndexStyledProps ) => (props.color ?? black)};
     letter-spacing: ${spacing};
     text-align: ${( props: IndexStyledProps ) => (props.textAlign ?? 'left')};
@@ -51,7 +51,7 @@ export const H3 = styled.Text`
 export const H4 = styled.Text`
     font-family: 'LexendDeca-Regular';
     font-size: 20px;
-    font-weight: ${( props: TextWeightStyledProps ) => ( props.weight ?? '700' )};
+    font-weight: ${( props: TextWeightStyledProps ) => ( props.weight ?? '400' )};
     color: ${( props: IndexStyledProps ) => (props.color ?? black)};
     letter-spacing: ${spacing};
     text-align: ${( props: IndexStyledProps ) => (props.textAlign ?? 'left')};
@@ -64,8 +64,8 @@ export const H4 = styled.Text`
 
 export const H5 = styled.Text`
     font-family: 'LexendDeca-Regular';
-    font-size: 19px;
-    font-weight: ${( props: TextWeightStyledProps ) => ( props.weight ?? '900' )};
+    font-size: 15px;
+    font-weight: ${( props: TextWeightStyledProps ) => ( props.weight ?? '400' )};
     color: ${( props: IndexStyledProps ) => (props.color ?? black)};
     letter-spacing: ${spacing};
     text-align: ${( props: IndexStyledProps ) => (props.textAlign ?? 'left')};
