@@ -1,13 +1,13 @@
 import React from "react";
 
-import { white } from "../../atomic/constants/colors";
+import { white } from "../../../atomic/constants/colors";
 
-import Main from "../../atomic/atoms/main";
-import Background from "../../atomic/atoms/background";
-import Text from "../../atomic/atoms/text";
+import Main from "../../../atomic/atoms/main";
+import Background from "../../../atomic/atoms/background";
+import Text from "../../../atomic/atoms/text";
 
 import Bg from '../../assets/background/splashSuccess.png'
-import Button from "../../atomic/molecules/button";
+import Button from "../../../atomic/molecules/button";
 
 import Check from '../../assets/vectors/correct.png'
 
