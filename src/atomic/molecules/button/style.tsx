@@ -6,8 +6,8 @@ import { MarginsStyledProps } from "../../constants/spacing";
 import { IndexStyledProps } from "./models";
 import { shadowPrimary } from "../../constants/button";
 
-const Main = styled.TouchableOpacity`
-    padding: 20px 40px;
+export const Main = styled.TouchableOpacity`
+    padding: ${( props: IndexStyledProps ) => ( props.larger ? '20px 70px' : '20px 40px')};
     justify-content: center;
     align-items: center;
     background-color: ${( props: IndexStyledProps ) => ( props.disabled ? `${grey}` : props.type == 'primary' ? `${primary}` : `${success}` )};
@@ -22,4 +22,13 @@ const Main = styled.TouchableOpacity`
     margin-bottom: ${( props: MarginsStyledProps ) => (props.mb ?? 0)};
 `
 
-export default Main
+export const Back = styled.TouchableOpacity`
+    padding: 0 20px;
+    justify-content: center;
+    align-items: center;
+`
+
+export const BackIcon = styled.Image`
+    width: 15px;
+    height: 25px;
+`
