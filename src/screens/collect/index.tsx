@@ -1,17 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Background from "../../atomic/atoms/background";
+
+import { white } from "../../atomic/constants/colors";
+import { currency } from "../../constants/formats";
 
 import Main from "../../atomic/atoms/main";
 import Text from "../../atomic/atoms/text";
+import Button from "../../atomic/molecules/button";
+import BoxCommon from "../../atomic/atoms/boxes/boxCommon";
+import { ItemType } from "../../atomic/organisms/item/models";
+
+import { RouteProp, useRoute } from "@react-navigation/native";
+import { StackProps } from "../../routes/models";
 
 import Bg from '../../assets/background/splashCollect.png'
 
 import View from "./view";
-import { white } from "../../atomic/constants/colors";
-import Button from "../../atomic/molecules/button";
-import BoxCommon from "../../atomic/atoms/boxes/boxCommon";
-import { ItemType } from "../../atomic/organisms/item/models";
-import { currency } from "../../constants/formats";
 
 const Items: ItemType[] = [
     {
@@ -47,6 +51,8 @@ const Items: ItemType[] = [
 ]
 
 const Collect: React.FC = () => {
+    const route = useRoute<RouteProp<StackProps, 'Collect'>>().params;
+
     const [items, setItems] = useState<ItemType[]>(Items)
 
     return (
@@ -58,7 +64,7 @@ const Collect: React.FC = () => {
                 <BoxCommon alignItems='center'>
                     <Text
                         type='H2'
-                        text='Casa de carnes 02 irmãos'
+                        text='Premium Carnes'
                         align='center'
                         color={white}
                         ml='10px'
@@ -66,7 +72,7 @@ const Collect: React.FC = () => {
                     />
                     <Text
                         type='H4'
-                        text='Ceilândia Norte - Brasília'
+                        text='Ceilândia Sul - Brasília'
                         align='center'
                         color={white}
                     />
@@ -74,8 +80,8 @@ const Collect: React.FC = () => {
                 <BoxCommon />
             </Background>
             <View
-                address='HSN Chácara 1 Lt 1 Loja 03 Condomínio Sol Nascente 03'
-                phone='(61) 9 9994-7188'
+                address='QNP 30 Conjunto A'
+                phone='(61) 9 8558-8404'
                 items={items}
                 setItems={setItems}
                 total={currency(items.reduce((valor, total) => Number(valor) + Number(total.value), 0), 2, 3, '.', ',')}

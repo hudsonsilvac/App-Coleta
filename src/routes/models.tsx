@@ -1,6 +1,8 @@
 export type StackProps = {
     Login: undefined;
     Home: undefined;
-    Collect: undefined;
+    Collect: {
+        id: string | number;
+    };
     Success: undefined;
 }
