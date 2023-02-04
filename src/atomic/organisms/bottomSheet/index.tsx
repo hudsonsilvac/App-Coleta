@@ -32,6 +32,9 @@ const BottomSheet: React.FC<IndexProps> = ({
                 </Header>
                 <Body>
                     { !type && children }
+                    {
+                        type === 'question' && <Text type='H4' text={String(description)} align='center' mb='35px' />
+                    }
                 </Body>
                 {
                     buttonConfirm && (

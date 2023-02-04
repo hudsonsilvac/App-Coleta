@@ -20,7 +20,6 @@ export const Backdrop = styled.TouchableOpacity.attrs({
 
 export const Main = styled.View`
     height: auto;
-    min-height: 350px;
     background-color: ${white};
     elevation: ${shadow.elevation};
     box-shadow: ${shadow.boxShadow};
