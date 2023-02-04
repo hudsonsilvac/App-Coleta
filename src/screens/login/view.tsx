@@ -47,6 +47,7 @@ const View: React.FC<ViewProps> = ({
                         value={password}
                         onChangeText={setPassword}
                         placeholder='Senha'
+                        mb='30px'
                     />
                 </BottomSheet>
             </Background>
