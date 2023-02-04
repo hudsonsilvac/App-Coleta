@@ -8,10 +8,11 @@ import { IndexProps } from "./models";
 
 const BoxValue: React.FC<IndexProps> = ({
     text,
-    value
+    value,
+    onPress
 }) => {
     return (
-        <Main>
+        <Main onPress={onPress}>
             <Box value={{ state: value.state}}>
                 <Text type='H4' text={value.description} color={white} weight='700' />
             </Box>

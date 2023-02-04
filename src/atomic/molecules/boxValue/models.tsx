@@ -3,6 +3,7 @@ import { StyledProps } from "styled-components"
 export interface IndexProps {
     text: string;
     value: StateType;
+    onPress: () => void;
 }
 
 type StateType = {
@@ -10,4 +11,9 @@ type StateType = {
     description: string;
 }
 
+export type BoxValueType = {
+    id: string | number;
+    text: string;
+    value: StateType;
+};
 export type IndexStyledProps = StyledProps<IndexProps>
