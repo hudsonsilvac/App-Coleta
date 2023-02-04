@@ -6,4 +6,7 @@ export interface ViewProps {
     items: ItemType[];
     setItems: (items: ItemType[]) => void;
     total: string;
+    showModal: boolean;
+    setShowModal: (state: boolean) => void;
+    confirm: () => void;
 }

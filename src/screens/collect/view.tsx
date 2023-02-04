@@ -1,23 +1,27 @@
 import React from "react";
 
+import { gray } from "../../atomic/constants/colors";
 import { screenWidth } from "../../atomic/constants/dimension";
 
 import BoxCommon from "../../atomic/atoms/boxes/boxCommon";
 import Container from "../../atomic/atoms/container";
 import Text from "../../atomic/atoms/text";
+import Item from "../../atomic/organisms/item";
+import Button from "../../atomic/molecules/button";
+
+import BottomSheet from "../../atomic/organisms/bottomSheet";
 
 import { ViewProps } from "./models";
-import Item from "../../atomic/organisms/item";
-import { gray } from "../../atomic/constants/colors";
-import Button from "../../atomic/molecules/button";
-import { ItemType } from "../../atomic/organisms/item/models";
 
 const View: React.FC<ViewProps> = ({
     address,
     phone,
     items,
     setItems,
-    total
+    total,
+    showModal,
+    setShowModal,
+    confirm
 }) => {
     return (
         <Container>
@@ -107,8 +111,20 @@ const View: React.FC<ViewProps> = ({
                 />
             </BoxCommon>
             <BoxCommon width='100%' alignItems='center' mt='50px' mb='50px'>
-                <Button type='success' text='Finalizar' larger onPress={() => null} />
+                <Button type='success' text='Finalizar' larger onPress={() => setShowModal(true)} />
             </BoxCommon>
+            <BottomSheet
+                    title='Confirmação'
+                    description='Tem certeza que você deseja finalizar esta coleta?'
+                    type='question'
+                    visible={showModal}
+                    buttonConfirm={{
+                        text: 'Finalizar',
+                        type: 'success',
+                        onPress: confirm
+                    }}
+                    setState={() => setShowModal(false)}
+            />
         </Container>
     )
 }

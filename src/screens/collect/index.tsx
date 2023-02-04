@@ -1,17 +1,18 @@
 import React, { useState } from "react";
-import Background from "../../atomic/atoms/background";
+
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { StackProps } from "../../routes/models";
 
 import { white } from "../../atomic/constants/colors";
 import { currency } from "../../constants/formats";
 
 import Main from "../../atomic/atoms/main";
+import Background from "../../atomic/atoms/background";
 import Text from "../../atomic/atoms/text";
 import Button from "../../atomic/molecules/button";
 import BoxCommon from "../../atomic/atoms/boxes/boxCommon";
 import { ItemType } from "../../atomic/organisms/item/models";
-
-import { RouteProp, useRoute } from "@react-navigation/native";
-import { StackProps } from "../../routes/models";
 
 import Bg from '../../assets/background/splashCollect.png'
 
@@ -51,9 +52,16 @@ const Items: ItemType[] = [
 ]
 
 const Collect: React.FC = () => {
+    const navigation = useNavigation<NativeStackNavigationProp<StackProps>>()
     const route = useRoute<RouteProp<StackProps, 'Collect'>>().params;
 
+    const [showModal, setShowModal] = useState<boolean>(false)
     const [items, setItems] = useState<ItemType[]>(Items)
+
+    const confirm = () => {
+        setShowModal(false)
+        navigation.navigate('Success')
+    }
 
     return (
         <Main>
@@ -85,6 +93,9 @@ const Collect: React.FC = () => {
                 items={items}
                 setItems={setItems}
                 total={currency(items.reduce((valor, total) => Number(valor) + Number(total.value), 0), 2, 3, '.', ',')}
+                showModal={showModal}
+                setShowModal={setShowModal}
+                confirm={confirm}
             />
         </Main>
     )
