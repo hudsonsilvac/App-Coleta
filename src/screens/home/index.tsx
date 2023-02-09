@@ -9,7 +9,7 @@ import { BoxValueType } from "../../atomic/molecules/boxValue/models";
 
 import View from "./view";
 
-const CustomerToCollect: BoxValueType[] = [
+const ProviderToCollect: BoxValueType[] = [
     {
         id: 0,
         text: 'Premium Carnes',
@@ -28,7 +28,7 @@ const CustomerToCollect: BoxValueType[] = [
     },
 ]
 
-const CustomerCollected: BoxValueType[] = [
+const ProviderCollected: BoxValueType[] = [
     {
         id: 2,
         text: 'Tradição Carnes',
@@ -63,12 +63,23 @@ const CustomerCollected: BoxValueType[] = [
     },
 ]
 
+const ProviderDisabled: BoxValueType[] = [
+    {
+        id: 6,
+        text: 'Casa de Carnes JR 02',
+        value: {
+            description: 'JR',
+            state: 'disabled'
+        }
+    },
+]
+
 const Home: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<StackProps>>()
 
     const [search, setSearch] = useState<string>('')
 
-    const customerData = (id: string | number) => {
+    const providerData = (id: string | number) => {
         navigation.navigate('Collect', { id })
     }
 
@@ -78,9 +89,10 @@ const Home: React.FC = () => {
                 user='Glaziani'
                 search={search}
                 setSearch={setSearch}
-                customersToCollect={CustomerToCollect}
-                customersCollected={CustomerCollected}
-                customerData={customerData}
+                providersToCollect={ProviderToCollect}
+                providersCollected={ProviderCollected}
+                providersDisabled={ProviderDisabled}
+                providerData={providerData}
             />
         </Main>
     )
