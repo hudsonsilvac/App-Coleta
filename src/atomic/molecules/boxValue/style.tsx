@@ -1,7 +1,7 @@
 import styled from "styled-components/native";
 
 import { borderRadius2 } from "../../constants/button";
-import { grey, normal, success } from "../../constants/colors";
+import { grey, normal, primary, success } from "../../constants/colors";
 import { IndexStyledProps } from "./models";
 
 export const Main = styled.TouchableOpacity`
@@ -18,7 +18,11 @@ export const Box = styled.View`
     width: 45px;
     height: 45px;
     border-radius: ${borderRadius2};
-    background-color: ${( props: IndexStyledProps ) => ( props.value.state == 'success' ? `${success}` : `${normal}` )};
+    background-color: ${( props: IndexStyledProps ) => ( props.value.state == 'success'
+                                                            ? `${success}`
+                                                            : props.value.state == 'disabled'
+                                                            ? `${primary}`
+                                                            : `${normal}` )};
     justify-content: center;
     align-items: center
 `

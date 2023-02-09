@@ -7,7 +7,7 @@ export interface IndexProps {
 }
 
 type StateType = {
-    state: 'normal' | 'success'
+    state: 'normal' | 'success' | 'disabled'
     description: string;
 }
 
