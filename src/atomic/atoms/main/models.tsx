@@ -5,7 +5,7 @@ export interface IndexProps {
     statusBar?: StatusBarType;
     children?: React.ReactNode[] | React.ReactNode | undefined | string | number;
     bgColor?: ColorValue | string;
-    padding?: boolean;
+    pd?: boolean;
 }
 
 type StatusBarType = {

@@ -110,7 +110,7 @@ const Home: React.FC = () => {
     }
 
     return (
-        <Main padding statusBar={{ barStyle: 'dark-content' }}>
+        <Main pd statusBar={{ barStyle: 'dark-content' }}>
             <View
                 user='Glaziani'
                 search={search}

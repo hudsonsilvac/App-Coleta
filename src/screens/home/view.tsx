@@ -9,6 +9,7 @@ import BoxValue from "../../atomic/molecules/boxValue";
 
 import { ViewProps } from "./models";
 import List from "../../atomic/atoms/list";
+import BoxCommon from "../../atomic/atoms/boxes/boxCommon";
 
 const View: React.FC<ViewProps> = ({
     user,
@@ -79,6 +80,7 @@ const View: React.FC<ViewProps> = ({
                     </>
                 )
             }
+            <BoxCommon height='50px' />
         </Container>
     )
 }
