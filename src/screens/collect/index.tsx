@@ -67,7 +67,7 @@ const Collect: React.FC = () => {
         <Main>
             <Background source={Bg} small justifyContent='space-between'>
                 <BoxCommon width='100%' mt='60px' mb='30px'>
-                    <Button type='back' onPress={() => null} />
+                    <Button type='back' onPress={() => navigation.goBack()} />
                 </BoxCommon>
                 <BoxCommon alignItems='center'>
                     <Text
