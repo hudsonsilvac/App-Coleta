@@ -1,3 +1,4 @@
+import { ListDataType } from "../../atomic/atoms/list/models";
 import { BoxValueType } from "../../atomic/molecules/boxValue/models";
 
 export interface ViewProps {
@@ -8,4 +9,7 @@ export interface ViewProps {
     providersCollected: BoxValueType[];
     providersDisabled: BoxValueType[];
     providerData: (id: string | number) => void;
+    list: ListDataType[]
+    listItemSelected: number;
+    setListItemSelected: (index: number) => void;
 }
