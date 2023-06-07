@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -8,8 +8,10 @@ import { black, normal, success, warning } from "../../atomic/constants/colors";
 import Main from "../../atomic/atoms/main";
 import { BoxValueType } from "../../atomic/molecules/boxValue/models";
 
-import View from "./view";
 import { ListDataType } from "../../atomic/atoms/list/models";
+import collections from "../../services/api/collections";
+
+import View from "./view";
 
 const ProviderToCollect: BoxValueType[] = [
     {
@@ -107,6 +109,18 @@ const Home: React.FC = () => {
 
     const providerData = (id: string | number) => {
         navigation.navigate('Collect', { id })
+    }
+
+    const [supplierNotStarted, setSupplierNotStarted] = useState<BoxValueType[]>([])
+    const [supplierCollected, setProviderCollected] = useState<BoxValueType[]>([])
+    const [supplierUnfulfilled, setProviderUnfulfilled] = useState<BoxValueType[]>([])
+
+    useEffect(() => {
+        loadData()
+    }, [])
+
+    const loadData = () => {
+        collections.notStarted({ codMotorista: '102' })
     }
 
     return (
