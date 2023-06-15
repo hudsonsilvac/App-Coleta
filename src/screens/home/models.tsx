@@ -6,8 +6,8 @@ export interface ViewProps {
     search: string;
     setSearch: (value: string) => void;
     providersToCollect: BoxValueType[];
-    providersCollected: BoxValueType[];
-    providersDisabled: BoxValueType[];
+    providersToDo: BoxValueType[];
+    providersSuccess: BoxValueType[];
     providerData: (id: string | number) => void;
     list: ListDataType[]
     listItemSelected: number;
