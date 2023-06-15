@@ -29,6 +29,7 @@ const List: React.FC<IndexProps> = ({
                 )
             }
             ItemSeparatorComponent={<Separator />}
+            showsHorizontalScrollIndicator={false}
             horizontal
             pagingEnabled
         />
