@@ -1,3 +1,4 @@
+import { ColorValue } from "react-native";
 import { StyledProps } from "styled-components"
 
 export interface IndexProps {
@@ -7,7 +8,7 @@ export interface IndexProps {
 }
 
 type StateType = {
-    state: 'normal' | 'success' | 'disabled'
+    state: ColorValue;
     description: string;
 }
 
