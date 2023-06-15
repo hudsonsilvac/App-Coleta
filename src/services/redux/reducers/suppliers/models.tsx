@@ -2,7 +2,7 @@ export interface IndexProps {
     data: Data;
 }
 
-export type CollectionsTypes = IndexProps;
+export type SuppliersTypes = IndexProps;
 
 type Data = {
     CODORDEMCOLETA: string
