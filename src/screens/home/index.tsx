@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+
+import { SuppliersTypes } from "../../services/redux/reducers/suppliers/models";
 
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -6,14 +10,14 @@ import { StackProps } from "../../routes/models";
 
 import { black, normal, primary, success } from "../../atomic/constants/colors";
 import Main from "../../atomic/atoms/main";
-import { BoxValueType } from "../../atomic/molecules/boxValue/models";
-
 import { ListDataType } from "../../atomic/atoms/list/models";
-import collections from "../../services/api/collections";
 
-import View from "./view";
+import collections from "../../services/api/collections";
 import { CollectionProps } from "../../services/api/collections/models";
-import { boxID } from "../../constants/formats";
+
+
+import { IndexProps } from "./models";
+import View from "./view";
 
 const List: ListDataType[] = [
     {
@@ -38,19 +42,22 @@ const List: ListDataType[] = [
     }
 ]
 
-const Home: React.FC = () => {
+const Home: React.FC<IndexProps> = ({
+    setSupplierData
+}) => {
     const navigation = useNavigation<NativeStackNavigationProp<StackProps>>()
 
     const [search, setSearch] = useState<string>('')
     const [listItemSelected, setListItemSelected] = useState<number>(0)
 
-    const providerData = (id: string | number) => {
-        navigation.navigate('Collect', { id })
+    const providerData = (item: SuppliersTypes['data']) => {
+        setSupplierData(item)
+        navigation.navigate('Collect')
     }
 
-    const [supplierToCollect, setSupplierToCollect] = useState<BoxValueType[]>([])
-    const [supplierToDo, setSupplierToDo] = useState<BoxValueType[]>([])
-    const [supplierSuccess, setSupplierSuccess] = useState<BoxValueType[]>([])
+    const [supplierToCollect, setSupplierToCollect] = useState<SuppliersTypes['data'][]>([])
+    const [supplierToDo, setSupplierToDo] = useState<SuppliersTypes['data'][]>([])
+    const [supplierSuccess, setSupplierSuccess] = useState<SuppliersTypes['data'][]>([])
 
     useEffect(() => {
         loadData()
@@ -58,43 +65,13 @@ const Home: React.FC = () => {
 
     const loadData = () => {
         collections.listToCollect({ codMotorista: '102' })
-        .then((data: CollectionProps[]) => {
-            let dataCollect = data.map(item => ({
-                id: item.CODORDEMCOLETA,
-                text: item.FORNECEDOR,
-                value: {
-                    description: boxID(item.FORNECEDOR),
-                    state: 'normal'
-                }
-            }))
-            setSupplierToCollect(dataCollect)
-        })
+        .then((data: CollectionProps[]) => setSupplierToCollect(data))
         
         collections.listToDo({ codMotorista: '102' })
-        .then((data: CollectionProps[]) => {
-            let dataCollect = data.map(item => ({
-                id: item.CODORDEMCOLETA,
-                text: item.FORNECEDOR,
-                value: {
-                    description: boxID(item.FORNECEDOR),
-                    state: 'primary'
-                }
-            }))
-            setSupplierToDo(dataCollect)
-        })
+        .then((data: CollectionProps[]) => setSupplierToDo(data))
 
         collections.listSuccess({ codMotorista: '102' })
-        .then((data: CollectionProps[]) => {
-            let dataCollect = data.map(item => ({
-                id: item.CODORDEMCOLETA,
-                text: item.FORNECEDOR,
-                value: {
-                    description: boxID(item.FORNECEDOR),
-                    state: 'success'
-                }
-            }))
-            setSupplierSuccess(dataCollect)
-        })
+        .then((data: CollectionProps[]) => setSupplierSuccess(data))
     }
 
     return (
@@ -115,4 +92,16 @@ const Home: React.FC = () => {
     )
 }
 
-export default Home
+const mapStateToProps = ({
+    suppliersReducer
+}: {
+    suppliersReducer: SuppliersTypes
+}) => ({
+    data: suppliersReducer.data,
+})
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+    setSupplierData: (data: SuppliersTypes['data']) => dispatch({ type: 'SET_SUPPLIER_DATA', payload: { data } }),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

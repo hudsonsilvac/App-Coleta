@@ -10,6 +10,7 @@ import BoxValue from "../../atomic/molecules/boxValue";
 import { ViewProps } from "./models";
 import List from "../../atomic/atoms/list";
 import BoxCommon from "../../atomic/atoms/boxes/boxCommon";
+import { boxID } from "../../constants/formats";
 
 const View: React.FC<ViewProps> = ({
     user,
@@ -36,9 +37,9 @@ const View: React.FC<ViewProps> = ({
                     {
                         providersToCollect.map((item, index) => (
                             <BoxValue
-                                text={item.text}
-                                value={{ description: item.value.description, state: item.value.state }}
-                                onPress={() => providerData(item.id)}
+                                text={item.FORNECEDOR}
+                                value={{ description: boxID(item.FORNECEDOR), state: 'normal' }}
+                                onPress={() => providerData(item)}
                                 key={index}
                             />
                         ))
@@ -54,9 +55,9 @@ const View: React.FC<ViewProps> = ({
                     {
                         providersToDo.map((item, index) => (
                             <BoxValue
-                                text={item.text}
-                                value={{ description: item.value.description, state: item.value.state }}
-                                onPress={() => providerData(item.id)}
+                                text={item.FORNECEDOR}
+                                value={{ description: boxID(item.FORNECEDOR), state: 'primary' }}
+                                onPress={() => providerData(item)}
                                 key={index}
                             />
                         ))
@@ -72,9 +73,9 @@ const View: React.FC<ViewProps> = ({
                     {
                         providersSuccess.map((item, index) => (
                             <BoxValue
-                                text={item.text}
-                                value={{ description: item.value.description, state: item.value.state }}
-                                onPress={() => providerData(item.id)}
+                                text={item.FORNECEDOR}
+                                value={{ description: boxID(item.FORNECEDOR), state: 'success' }}
+                                onPress={() => providerData(item)}
                                 key={index}
                             />
                         ))
