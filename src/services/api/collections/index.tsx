@@ -1,5 +1,5 @@
 import api from '../../api/index'
-import { IndexType, CollectionProps } from './models'
+import { IndexType, CollectionProps, AddType } from './models'
 
 const listToCollect = ({ codMotorista }: IndexType) => {
     return new Promise<CollectionProps[]>(async (resolve, reject) => {
@@ -82,8 +82,19 @@ const listSuccess = ({ codMotorista }: IndexType) => {
     })
 }
 
+const addItem = ({ items, codOrdemColeta, DTULAlteracao, qtTotalColetada, qtItensColetados, qtItensPrevistos, vlTotal, qtPrevista,
+                dtHoraColeta, data, dtHoraStatus, qtColetasReal, pesoColeta, vlColeta, numCar }: AddType) => {
+    return new Promise(async (resolve, reject) => {
+        await api.post('coletas/add-item-ordem-coleta.php', { items, codOrdemColeta, DTULAlteracao, qtTotalColetada, qtItensColetados, qtItensPrevistos, vlTotal, qtPrevista,
+            dtHoraColeta, data, dtHoraStatus, qtColetasReal, pesoColeta, vlColeta, numCar })
+        .then(response => resolve(response))
+        .catch((response) => reject(response))
+    })
+}
+
 export default {
     listToDo,
     listToCollect,
-    listSuccess
+    listSuccess,
+    addItem
 }
