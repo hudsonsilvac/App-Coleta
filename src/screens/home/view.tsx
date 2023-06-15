@@ -69,7 +69,7 @@ const View: React.FC<ViewProps> = ({
             (listItemSelected === 0 || listItemSelected === 3)
             && (
                 <>
-                    <Text type='H4' text='Realizadas' weight='700' mt='20px' mb='20px' />
+                    <Text type='H3' text='Realizadas' weight='700' mt='20px' mb='20px' />
                     {
                         providersSuccess.map((item, index) => (
                             <BoxValue
