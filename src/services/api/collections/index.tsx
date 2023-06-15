@@ -1,14 +1,14 @@
 import api from '../../api/index'
 import { IndexType, CollectionProps } from './models'
 
-const listToDo = ({ codMotorista }: IndexType) => {
-    return new Promise(async (resolve, reject) => {
-        await api.post('coletas/coletas-a-fazer.php', { codMotorista })
+const listToCollect = ({ codMotorista }: IndexType) => {
+    return new Promise<CollectionProps[]>(async (resolve, reject) => {
+        await api.post('coletas/coletas-nao-iniciadas.php', { codMotorista })
         .then(response => {
-            let res:CollectionProps[] = response.data.coletasNaoRealizadas
+            let res:CollectionProps[] = response.data.coletasNaoIniciadas
             let array:CollectionProps[] = []
 
-            for (let i = 0; i < res.length; i++ ) {
+            for (let i = 0; i < res?.length; i++ ) {
                 let json: CollectionProps = {
                     CODFILIAL: res[i].CODFILIAL,
                     CODFORNEC: res[i].CODFORNEC,
@@ -22,20 +22,20 @@ const listToDo = ({ codMotorista }: IndexType) => {
                 }
                 array.push(json)
             }
-            resolve(array)
+            resolve(array || [])
         })
         .catch((response) => reject(response))
     })
 }
 
-const notStarted = ({ codMotorista }: IndexType) => {
-    return new Promise(async (resolve, reject) => {
-        await api.post('coletas/coletas-nao-iniciadas.php', { codMotorista })
+const listToDo = ({ codMotorista }: IndexType) => {
+    return new Promise<CollectionProps[]>(async (resolve, reject) => {
+        await api.post('coletas/coletas-nao-realizadas.php', { codMotorista })
         .then(response => {
-            let res:CollectionProps[] = response.data.suppliers
+            let res:CollectionProps[] = response.data.coletasNaoRealizadas
             let array:CollectionProps[] = []
 
-            for (let i = 0; i < res.length; i++ ) {
+            for (let i = 0; i < res?.length; i++ ) {
                 let json: CollectionProps = {
                     CODFILIAL: res[i].CODFILIAL,
                     CODFORNEC: res[i].CODFORNEC,
@@ -49,7 +49,34 @@ const notStarted = ({ codMotorista }: IndexType) => {
                 }
                 array.push(json)
             }
-            resolve(array)
+            resolve(array || [])
+        })
+        .catch((response) => reject(response))
+    })
+}
+
+const listSuccess = ({ codMotorista }: IndexType) => {
+    return new Promise<CollectionProps[]>(async (resolve, reject) => {
+        await api.post('coletas/coletas-realizadas.php', { codMotorista })
+        .then(response => {
+            let res:CollectionProps[] = response.data.coletasRealizadas
+            let array:CollectionProps[] = []
+
+            for (let i = 0; i < res?.length; i++ ) {
+                let json: CollectionProps = {
+                    CODFILIAL: res[i].CODFILIAL,
+                    CODFORNEC: res[i].CODFORNEC,
+                    CODORDEMCOLETA: res[i].CODORDEMCOLETA,
+                    DTCOLETA: res[i].DTCOLETA,
+                    DTULTALTERACAO: res[i].DTULTALTERACAO,
+                    FORNECEDOR: res[i].FORNECEDOR,
+                    POSICAO: res[i].POSICAO,
+                    QTTOTALCOLETADA: res[i].QTTOTALCOLETADA,
+                    VLTOTAL: res[i].VLTOTAL
+                }
+                array.push(json)
+            }
+            resolve(array || [])
         })
         .catch((response) => reject(response))
     })
@@ -57,5 +84,6 @@ const notStarted = ({ codMotorista }: IndexType) => {
 
 export default {
     listToDo,
-    notStarted
+    listToCollect,
+    listSuccess
 }
