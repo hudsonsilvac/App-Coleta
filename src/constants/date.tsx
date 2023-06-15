@@ -4,5 +4,5 @@ export function getDateCurrent() {
     let day = String(date.getDate()).padStart(2, '0')
     let year = String(date.getFullYear())
     
-    return `${month}/${day}/${year}`
+    return `${day}/${month}/${year}`
 }
