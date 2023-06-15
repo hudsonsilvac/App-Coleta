@@ -3,7 +3,7 @@ export type IndexType = {
 }
 
 export type AddType = {
-    items: ItemsType[]
+    itens: ItemsType[]
     codOrdemColeta: string
     DTULAlteracao: string
     qtTotalColetada: string
@@ -14,7 +14,6 @@ export type AddType = {
     dtHoraColeta: string
     data: string
     dtHoraStatus: string
-    qtColetasReal: string
     pesoColeta: string
     vlColeta: string
     numCar: string
@@ -34,6 +33,10 @@ export interface CollectionProps {
     CODFORNEC: string
     FORNECEDOR: string
     POSICAO: string
+    TELEFONE: string;
+    ENDERECO: string;
+    BAIRRO: string;
+    CIDADE_ESTADO: string;
     DTULTALTERACAO: string
     QTTOTALCOLETADA: string
     VLTOTAL: string

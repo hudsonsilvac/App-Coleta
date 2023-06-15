@@ -11,6 +11,10 @@ type Data = {
     CODFORNEC: string
     FORNECEDOR: string
     POSICAO: string
+    TELEFONE: string;
+    ENDERECO: string;
+    BAIRRO: string;
+    CIDADE_ESTADO: string;
     DTULTALTERACAO: string
     QTTOTALCOLETADA: string
     VLTOTAL: string

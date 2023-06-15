@@ -17,6 +17,10 @@ const listToCollect = ({ codMotorista }: IndexType) => {
                     DTULTALTERACAO: res[i].DTULTALTERACAO,
                     FORNECEDOR: res[i].FORNECEDOR,
                     POSICAO: res[i].POSICAO,
+                    BAIRRO: res[i].BAIRRO,
+                    CIDADE_ESTADO: res[i].CIDADE_ESTADO,
+                    ENDERECO: res[i].ENDERECO,
+                    TELEFONE: res[i].TELEFONE,
                     QTTOTALCOLETADA: res[i].QTTOTALCOLETADA,
                     VLTOTAL: res[i].VLTOTAL
                 }
@@ -44,6 +48,10 @@ const listToDo = ({ codMotorista }: IndexType) => {
                     DTULTALTERACAO: res[i].DTULTALTERACAO,
                     FORNECEDOR: res[i].FORNECEDOR,
                     POSICAO: res[i].POSICAO,
+                    BAIRRO: res[i].BAIRRO,
+                    CIDADE_ESTADO: res[i].CIDADE_ESTADO,
+                    ENDERECO: res[i].ENDERECO,
+                    TELEFONE: res[i].TELEFONE,
                     QTTOTALCOLETADA: res[i].QTTOTALCOLETADA,
                     VLTOTAL: res[i].VLTOTAL
                 }
@@ -71,6 +79,10 @@ const listSuccess = ({ codMotorista }: IndexType) => {
                     DTULTALTERACAO: res[i].DTULTALTERACAO,
                     FORNECEDOR: res[i].FORNECEDOR,
                     POSICAO: res[i].POSICAO,
+                    BAIRRO: res[i].BAIRRO,
+                    CIDADE_ESTADO: res[i].CIDADE_ESTADO,
+                    ENDERECO: res[i].ENDERECO,
+                    TELEFONE: res[i].TELEFONE,
                     QTTOTALCOLETADA: res[i].QTTOTALCOLETADA,
                     VLTOTAL: res[i].VLTOTAL
                 }
@@ -82,11 +94,11 @@ const listSuccess = ({ codMotorista }: IndexType) => {
     })
 }
 
-const addItem = ({ items, codOrdemColeta, DTULAlteracao, qtTotalColetada, qtItensColetados, qtItensPrevistos, vlTotal, qtPrevista,
-                dtHoraColeta, data, dtHoraStatus, qtColetasReal, pesoColeta, vlColeta, numCar }: AddType) => {
+const addItem = ({ itens, codOrdemColeta, DTULAlteracao, qtTotalColetada, qtItensColetados, qtItensPrevistos, vlTotal, qtPrevista,
+                dtHoraColeta, data, dtHoraStatus, pesoColeta, vlColeta, numCar }: AddType) => {
     return new Promise(async (resolve, reject) => {
-        await api.post('coletas/add-item-ordem-coleta.php', { items, codOrdemColeta, DTULAlteracao, qtTotalColetada, qtItensColetados, qtItensPrevistos, vlTotal, qtPrevista,
-            dtHoraColeta, data, dtHoraStatus, qtColetasReal, pesoColeta, vlColeta, numCar })
+        await api.post('coletas/add-item-ordem-coleta.php', { itens, codOrdemColeta, DTULAlteracao, qtTotalColetada, qtItensColetados, qtItensPrevistos, vlTotal, qtPrevista,
+            dtHoraColeta, data, dtHoraStatus, pesoColeta, vlColeta, numCar })
         .then(response => resolve(response))
         .catch((response) => reject(response))
     })
