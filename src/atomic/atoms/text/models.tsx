@@ -9,6 +9,8 @@ export default interface Main extends Margins {
     color?: string;
     align?: Alignments
     weight?: TextWeight;
+    adjustsFontSizeToFit?: boolean;
+    numberOfLines?: number;
 }
 
 type Types = 'H1' | 'H2' | 'H3' | 'H4' | 'H5';

@@ -10,6 +10,8 @@ const Text: React.FC<Model> = ({
     color,
     align,
     weight,
+    adjustsFontSizeToFit,
+    numberOfLines,
     mt,
     ml,
     mr,
@@ -22,6 +24,8 @@ const Text: React.FC<Model> = ({
                     color={color}
                     textAlign={align}
                     weight={weight}
+                    adjustsFontSizeToFit={adjustsFontSizeToFit}
+                    numberOfLines={numberOfLines}
                     mt={mt}
                     ml={ml}
                     mr={mr}
@@ -43,6 +47,8 @@ const Text: React.FC<Model> = ({
                     color={color}
                     textAlign={align}
                     weight={weight}
+                    adjustsFontSizeToFit={adjustsFontSizeToFit}
+                    numberOfLines={numberOfLines}
                     mt={mt}
                     ml={ml}
                     mr={mr}
@@ -64,6 +70,8 @@ const Text: React.FC<Model> = ({
                     color={color}
                     textAlign={align}
                     weight={weight}
+                    adjustsFontSizeToFit={adjustsFontSizeToFit}
+                    numberOfLines={numberOfLines}
                     mt={mt}
                     ml={ml}
                     mr={mr}
@@ -85,6 +93,8 @@ const Text: React.FC<Model> = ({
                     color={color}
                     textAlign={align}
                     weight={weight}
+                    adjustsFontSizeToFit={adjustsFontSizeToFit}
+                    numberOfLines={numberOfLines}
                     mt={mt}
                     ml={ml}
                     mr={mr}
@@ -106,6 +116,8 @@ const Text: React.FC<Model> = ({
                     color={color}
                     textAlign={align}
                     weight={weight}
+                    adjustsFontSizeToFit={adjustsFontSizeToFit}
+                    numberOfLines={numberOfLines}
                     mt={mt}
                     ml={ml}
                     mr={mr}
