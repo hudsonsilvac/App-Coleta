@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
-
 import { Alert } from "react-native";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import { BluetoothManager, BluetoothEscposPrinter } from "tp-react-native-bluetooth-printer";
+
+import { SuppliersTypes } from "../../services/redux/reducers/suppliers/models";
 
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -20,49 +23,25 @@ import { ItemType } from "../../atomic/organisms/item/models";
 import Bg from '../../assets/background/splashCollect.png'
 
 import View from "./view";
+import { IndexProps } from "./models";
+import reactotron from "reactotron-react-native";
+import products from "../../services/api/products";
+import { ProductsProps } from "../../services/api/products/models";
+import { getDateCurrent } from "../../constants/date";
+import collections from "../../services/api/collections";
 
-const Items: ItemType[] = [
-    {
-        id: 0,
-        description: 'Osso',
-        prevision: '600',
-        value: '',
-    },
-    {
-        id: 1,
-        description: 'Muxiba',
-        prevision: '200',
-        value: '',
-    },
-    {
-        id: 2,
-        description: 'Residuos Abate',
-        prevision: '400',
-        value: '',
-    },
-    {
-        id: 3,
-        description: 'Gordura',
-        prevision: '800',
-        value: '',
-    },
-    {
-        id: 4,
-        description: 'Sangue',
-        prevision: '1000',
-        value: '',
-    },
-]
-
-const Collect: React.FC = () => {
+const Collect: React.FC<IndexProps> = ({
+    dataSupplier
+}) => {
     const navigation = useNavigation<NativeStackNavigationProp<StackProps>>()
     const route = useRoute<RouteProp<StackProps, 'Collect'>>().params;
 
     const [showModal, setShowModal] = useState<boolean>(false)
-    const [items, setItems] = useState<ItemType[]>(Items)
+    const [items, setItems] = useState<ItemType[]>([])
 
     useEffect(() => {
         connect()
+        listData()
     }, [])
 
     const connect = () => {
@@ -85,7 +64,90 @@ const Collect: React.FC = () => {
         );
     }
 
+    const listData = () => {
+        products.listAll({ codigoFilial: dataSupplier.CODFILIAL, codigoFornecedor: dataSupplier.CODFORNEC })
+        .then((data: ProductsProps[]) => {
+            let dataProduct: ItemType[] = data.map(item => ({
+                id: item.CODPROD,
+                description: item.DESCRICAO,
+                prevision: item.QTPREVISAO || '0',
+                value: '',
+                price: item.PCOMPRA || '0'
+            }))
+
+            setItems(dataProduct)
+        })
+    }
+
+    const setValue = (value: string, id: string) => {
+        let newData = items.map(item => (
+            {
+                id: item.id,
+                description: item.description,
+                prevision: item.prevision,
+                value: item.id === id ? value : item.value,
+            }
+        ))
+        setItems(newData)
+    }
+
     const confirm = async () => {
+        let codOrdemColeta = dataSupplier.CODORDEMCOLETA
+        let DTULAlteracao = dataSupplier.DTULTALTERACAO
+        let dtHoraColeta = getDateCurrent()
+        let data = getDateCurrent()
+        let dtHoraStatus = getDateCurrent()
+        let numCar = '0'
+
+        let qtTotalColetada = String(items.reduce((accumulattor, total) => Number(accumulattor) + Number(total.value), 0))
+        let qtItensColetados = String(items.reduce((accumulattor, total) => Number(total.value) > 0 ? Number(accumulattor) + 1 : Number(accumulattor), 0))
+        let qtItensPrevistos = String(items.length)
+        let qtPrevista = String(items.reduce((valor, total) => Number(valor) + Number(total.prevision), 0))
+        let pesoColeta = String(items.reduce((accumulattor, total) => Number(accumulattor) + Number(total.value), 0))
+
+        let vlTotal = String(items.reduce((accumulattor, total) => Number(accumulattor) + (Number(total.price || 0) * Number(total.value || 0)), 0))
+        let vlColeta = String(items.reduce((accumulattor, total) => Number(accumulattor) + (Number(total.price || 0) * Number(total.value || 0)), 0))
+
+        reactotron.warn!!({
+            codOrdemColeta,
+            DTULAlteracao,
+            qtTotalColetada,
+            qtItensColetados,
+            qtItensPrevistos,
+            vlTotal,
+            qtPrevista,
+            dtHoraColeta,
+            data,
+            dtHoraStatus,
+            pesoColeta,
+            vlColeta,
+            numCar
+        })
+
+        let newItems = items.map(item => ({
+            codProd: String(item.id),
+            quantidade: item.value,
+            pCompra: item.price,
+            qtPrevista: item.prevision,
+        }))
+
+        collections.addItem({
+            itens: newItems,
+            codOrdemColeta,
+            DTULAlteracao,
+            qtTotalColetada,
+            qtItensColetados,
+            qtItensPrevistos,
+            vlTotal,
+            qtPrevista,
+            dtHoraColeta,
+            data,
+            dtHoraStatus,
+            pesoColeta,
+            vlColeta,
+            numCar
+        })
+
         await BluetoothEscposPrinter.printText('--------------------------------', {
             encoding: "Cp857",
             codepage: 13,
@@ -93,7 +155,7 @@ const Collect: React.FC = () => {
             widthtimes: 3,
             heigthtimes: 3,
         });
-        await BluetoothEscposPrinter.printText(`${('NUTRIFORTE').padStart(21, ' ')}`, {
+        await BluetoothEscposPrinter.printText(`${dataSupplier.FORNECEDOR.padStart(21, ' ')}`, {
             encoding: "Cp857",
             codepage: 13,
             fonttype: 0,
@@ -203,15 +265,17 @@ const Collect: React.FC = () => {
                 <BoxCommon alignItems='center'>
                     <Text
                         type='H2'
-                        text='Premium Carnes'
+                        text={dataSupplier.FORNECEDOR}
                         align='center'
                         color={white}
+                        numberOfLines={2}
+                        adjustsFontSizeToFit
                         ml='10px'
                         mr='10px'
                     />
                     <Text
                         type='H4'
-                        text='Ceilândia Sul - Brasília'
+                        text={`${dataSupplier.BAIRRO || ''} ${dataSupplier.CIDADE_ESTADO}`}
                         align='center'
                         color={white}
                     />
@@ -219,10 +283,10 @@ const Collect: React.FC = () => {
                 <BoxCommon />
             </Background>
             <View
-                address='QNP 30 Conjunto A'
-                phone='(61) 9 8558-8404'
+                address={dataSupplier.ENDERECO || ''}
+                phone={dataSupplier.TELEFONE || ''}
                 items={items}
-                setItems={setItems}
+                setItem={setValue}
                 total={currency(items.reduce((valor, total) => Number(valor) + Number(total.value), 0), 2, 3, '.', ',')}
                 showModal={showModal}
                 setShowModal={setShowModal}
@@ -232,4 +296,14 @@ const Collect: React.FC = () => {
     )
 }
 
-export default Collect;
+const mapStateToProps = ({
+    suppliersReducer
+}: {
+    suppliersReducer: SuppliersTypes
+}) => ({
+    dataSupplier: suppliersReducer.data,
+})
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Collect);

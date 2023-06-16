@@ -8,7 +8,6 @@ import Container from "../../atomic/atoms/container";
 import Text from "../../atomic/atoms/text";
 import Item from "../../atomic/organisms/item";
 import Button from "../../atomic/molecules/button";
-
 import BottomSheet from "../../atomic/organisms/bottomSheet";
 
 import { ViewProps } from "./models";
@@ -17,7 +16,7 @@ const View: React.FC<ViewProps> = ({
     address,
     phone,
     items,
-    setItems,
+    setItem,
     total,
     showModal,
     setShowModal,
@@ -88,18 +87,11 @@ const View: React.FC<ViewProps> = ({
                 {
                     items.map((item, index) => (
                         <Item
-                            description={item.description}
+                            description={item.description.split(' ')[0]}
                             prevision={item.prevision}
                             value={item.value}
-                            setValue={(value) => {
-                                setItems(
-                                    items.map(item => 
-                                        item.id === index
-                                        ? { ...item, value }
-                                        : item
-                                )
-                                )
-                            }}
+                            setValue={(value) => setItem(value, String(item.id))}
+                            key={index}
                         />
                     ))
                 }
