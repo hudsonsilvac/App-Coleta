@@ -1,12 +1,9 @@
 import { IndexProps } from "./models";
 
 const initialState: IndexProps = {
-    token: '',
     data: {
-        id: 0,
+        id: '',
         name: '',
-        email: '',
-        type: 'customer'
     }
 };
 
