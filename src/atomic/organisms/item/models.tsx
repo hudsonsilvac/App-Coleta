@@ -6,8 +6,9 @@ export interface IndexProps {
 }
 
 export type ItemType = {
-    id: number;
+    id: string | number;
     description: string;
     prevision: string;
     value: string;
+    price: string;
 }
