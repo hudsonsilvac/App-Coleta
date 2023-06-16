@@ -11,6 +11,7 @@ export interface IndexProps extends Margins {
     textAlign?: TextAlign;
     keyboardType?: KeyboardType
     autoFocus?: boolean;
+    onPress?: () => void;
 }
 
 export type IndexStyledProps = StyledProps<IndexProps>

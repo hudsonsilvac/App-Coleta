@@ -4,7 +4,7 @@ import { gray, black, grey } from "../../constants/colors";
 import { MarginsStyledProps } from "../../constants/spacing";
 import { IndexStyledProps } from "./models";
 
-export const Main = styled.View`
+export const Main = styled.TouchableOpacity`
     width: ${( props: IndexStyledProps ) => ( props.width ?? 'null' )};
     height: 65px;
     padding-top: 10px;
@@ -15,6 +15,7 @@ export const Main = styled.View`
     border-radius: 15px;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
 
     margin-top: ${( props: MarginsStyledProps ) => (props.mt ?? 0)};
     margin-left: ${( props: MarginsStyledProps ) => (props.ml ?? 0)};
