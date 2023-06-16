@@ -18,8 +18,9 @@ export const Backdrop = styled.TouchableOpacity.attrs({
     z-index: 999;
 `
 
-export const Main = styled.View`
+export const Main = styled.ScrollView`
     height: auto;
+    max-height: 450px;
     background-color: ${white};
     elevation: ${shadow.elevation};
     box-shadow: ${shadow.boxShadow};
