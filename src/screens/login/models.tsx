@@ -2,7 +2,7 @@ import { StoresProps, UsersProps } from "../../services/api/users/models";
 import { LoginTypes } from "../../services/redux/reducers/login/models";
 
 export interface IndexProps {
-    data: LoginTypes['data']
+    userData: LoginTypes['data']
     setLoginData: (data: LoginTypes['data']) => void;
 }
 

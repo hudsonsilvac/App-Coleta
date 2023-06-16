@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Alert } from "react-native";
 
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -8,15 +9,16 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { StackProps } from "../../routes/models";
 
+import { getDateCurrent } from "../../constants/date";
+
 import users from "../../services/api/users";
 import { StoresProps, UsersProps } from "../../services/api/users/models";
 
 import { IndexProps } from "./models";
 import View from "./view";
-import { Alert } from "react-native";
 
 const Login: React.FC<IndexProps> = ({
-    data,
+    userData,
     setLoginData
 }) => {
     const navigation = useNavigation<NativeStackNavigationProp<StackProps>>()
@@ -39,6 +41,8 @@ const Login: React.FC<IndexProps> = ({
     }, [])
 
     const loadData = () => {
+        if (userData.dateLogin === getDateCurrent()) navigation.navigate('Home')
+
         users.listStores().then((data: StoresProps[]) => setStores(data))
     }
 
@@ -55,7 +59,8 @@ const Login: React.FC<IndexProps> = ({
         .then((data) => {
             setLoginData({
                 id: userSelected.MATRICULA,
-                name: userSelected.NOME
+                name: userSelected.NOME,
+                dateLogin: getDateCurrent()
             })
             setShowModal(false)
             navigation.navigate('Home')
@@ -91,7 +96,7 @@ const mapStateToProps = ({
 }: {
     loginReducer: LoginTypes
 }) => ({
-    data: loginReducer.data,
+    userData: loginReducer.data,
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
