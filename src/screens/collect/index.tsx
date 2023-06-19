@@ -162,7 +162,7 @@ const Collect: React.FC<IndexProps> = ({
             widthtimes: 3,
             heigthtimes: 3,
         });
-        await BluetoothEscposPrinter.printText(`${('(61) 3626-0000').padStart(23, ' ')}`, {
+        await BluetoothEscposPrinter.printText(`${(dataSupplier.TELEFONE).padStart(23, ' ')}`, {
             encoding: "Cp857",
             codepage: 13,
             fonttype: 1,
@@ -176,7 +176,7 @@ const Collect: React.FC<IndexProps> = ({
             widthtimes: 3,
             heigthtimes: 3,
         });
-        await BluetoothEscposPrinter.printText('Código: 86822', {
+        await BluetoothEscposPrinter.printText(`Código: ${dataSupplier.CODORDEMCOLETA}`, {
             encoding: "Cp857",
             codepage: 13,
             fonttype: 1,
@@ -194,7 +194,7 @@ const Collect: React.FC<IndexProps> = ({
             widthtimes: 3,
             heigthtimes: 3,
         });
-        await BluetoothEscposPrinter.printText('12-TATICO / REC DAS EMAS', {
+        await BluetoothEscposPrinter.printText(`${dataSupplier.BAIRRO} - ${dataSupplier.CIDADE_ESTADO}`, {
             encoding: "Cp857",
             codepage: 13,
             fonttype: 1,
