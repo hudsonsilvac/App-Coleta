@@ -73,6 +73,7 @@ const View: React.FC<ViewProps> = ({
                     value={password}
                     onChangeText={setPassword}
                     placeholder='Senha'
+                    keyboardType='password'
                     mb='30px'
                 />
             </BottomSheet>

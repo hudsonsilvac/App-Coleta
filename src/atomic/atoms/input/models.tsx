@@ -9,7 +9,7 @@ export interface IndexProps extends Margins {
     onChangeText: (value: string) => void;
     placeholder: string;
     textAlign?: TextAlign;
-    keyboardType?: KeyboardType
+    keyboardType?: KeyboardType | 'password'
     autoFocus?: boolean;
     onPress?: () => void;
 }

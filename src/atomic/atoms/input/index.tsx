@@ -31,6 +31,7 @@ const Input: React.FC<IndexProps> = ({
                         placeholder={placeholder}
                         keyboardType={keyboardType}
                         autoFocus={autoFocus}
+                        secureTextEntry={keyboardType === 'password'}
                     />
                 </Main>
             )
