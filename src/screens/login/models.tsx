@@ -21,10 +21,14 @@ export interface ViewProps {
     user: UsersProps[]
     userSelected: UsersProps
     setUserSelected: ({ MATRICULA, NOME }: UsersProps) => void;
+
+    showKM: boolean;
+    setShowKM: (state: boolean) => void;
+    initialKM: string;
+    setInitialKM: (value: string) => void;
     
-    login: string;
-    setLogin: (value: string) => void;
     password: string;
     setPassword: (value: string) => void;
     confirm: () => void;
+    insertKM: () => void;
 }

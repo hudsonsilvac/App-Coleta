@@ -26,6 +26,12 @@ type ItemsType = {
     qtPrevista: string;
 }
 
+export type KMType = {
+    codMotorista: string;
+    kmInicial?: string;
+    dtHoraStatus?: string;
+}
+
 export interface CollectionProps {
     CODORDEMCOLETA: string
     CODFILIAL: string
@@ -40,4 +46,9 @@ export interface CollectionProps {
     DTULTALTERACAO: string
     QTTOTALCOLETADA: string
     VLTOTAL: string
+}
+
+export interface KMProps {
+    status: boolean;
+    mensagem: string;
 }

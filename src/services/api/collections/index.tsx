@@ -1,5 +1,5 @@
 import api from '../../api/index'
-import { IndexType, CollectionProps, AddType } from './models'
+import { IndexType, CollectionProps, AddType, KMType, KMProps } from './models'
 
 const listToCollect = ({ codMotorista }: IndexType) => {
     return new Promise<CollectionProps[]>(async (resolve, reject) => {
@@ -104,9 +104,34 @@ const addItem = ({ itens, codOrdemColeta, DTULAlteracao, qtTotalColetada, qtIten
     })
 }
 
+const verifyKM = ({ codMotorista }: KMType) => {
+    return new Promise<KMProps['status']>(async (resolve, reject) => {
+        await api.post('coletas/verifica-km-inicial.php', { codMotorista })
+        .then((response) => {
+            let res:KMProps['status'] = response.data.status
+            if (res === true) resolve(true)
+            else reject(false)
+        })
+        .catch(() => reject(false))
+    })
+}
+
+const insertKM = ({ codMotorista, kmInicial, dtHoraStatus }: KMType) => {
+    return new Promise<KMProps['status']>(async (resolve, reject) => {
+        await api.post('coletas/inserir-km-inicial.php', { codMotorista, kmInicial, dtHoraStatus })
+        .then((response) => {
+            let res:KMProps['status'] = response.data.status
+            resolve(res)
+        })
+        .catch((response) => reject(response))
+    })
+}
+
 export default {
     listToDo,
     listToCollect,
     listSuccess,
-    addItem
+    addItem,
+    verifyKM,
+    insertKM
 }

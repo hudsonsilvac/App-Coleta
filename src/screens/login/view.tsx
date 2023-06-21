@@ -22,14 +22,17 @@ const View: React.FC<ViewProps> = ({
     setStoreSelected,
     showUsers,
     setShowUsers,
+    showKM,
+    setShowKM,
+    initialKM,
+    setInitialKM,
     user,
     userSelected,
     setUserSelected,
-    login,
-    setLogin,
     password,
     setPassword,
-    confirm
+    confirm,
+    insertKM
 }) => (
     <Main>
         <Background source={Bg} justifyContent='flex-end'>
@@ -100,7 +103,7 @@ const View: React.FC<ViewProps> = ({
                 setState={() => setShowUsers(false)}
             >
                 {
-                    user.map(item => (
+                    user.map((item, index) => (
                             <Button
                                 text={`${item.MATRICULA} - ${item.NOME}`}
                                 onPress={() => {
@@ -109,11 +112,29 @@ const View: React.FC<ViewProps> = ({
                                     setShowModal(true)
                                 }}
                                 key={item.MATRICULA}
-                                mb='10px'
+                                mb={user.length - 1 == index ? '70px' : '10px'}
                             />
                         )
                     )
                 }
+            </BottomSheet>
+            <BottomSheet
+                title='Inserir KM Inicial'
+                visible={showKM}
+                setState={() => setShowKM(false)}
+                buttonConfirm={{
+                    text: 'Salvar',
+                    type: 'primary',
+                    onPress: insertKM
+                }}
+            >
+                <Input
+                    value={initialKM}
+                    onChangeText={setInitialKM}
+                    placeholder='Digite o KM'
+                    keyboardType="number-pad"
+                    mb='30px'
+                />
             </BottomSheet>
         </Background>
     </Main>
