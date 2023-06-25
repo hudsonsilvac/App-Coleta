@@ -11,14 +11,20 @@ const initialState: IndexProps = {
         DTULTALTERACAO: '',
         QTTOTALCOLETADA: '',
         VLTOTAL: '',
-    }
+        BAIRRO: '',
+        CIDADE_ESTADO: '',
+        ENDERECO: '',
+        TELEFONE: ''
+    },
 };
 
-export default (state = initialState, action: any) => {
+export default (state = initialState, action: { type: string, payload: IndexProps }) => {
     switch(action.type) {
+        case 'RESET_SUPPLIER_DATA':
+            return { ...state, data: initialState };
         case 'SET_SUPPLIER_DATA':
             return { ...state, data: action.payload.data };
+        default:
+            return state;
     }
-
-    return state;
 }

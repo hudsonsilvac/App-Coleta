@@ -1,25 +1,16 @@
 import { IndexProps } from "./models";
 
 const initialState: IndexProps = {
-    data: {
-        CODORDEMCOLETA: '',
-        CODFILIAL: '',
-        DTCOLETA: '',
-        CODFORNEC: '',
-        FORNECEDOR: '',
-        POSICAO: '',
-        DTULTALTERACAO: '',
-        QTTOTALCOLETADA: '',
-        VLTOTAL: '',
-    }
+    lastCollect: '012'
 };
 
-export default (state = initialState, action: any) => {
+export default (state = initialState, action: { type: string, payload: IndexProps }) => {
     switch(action.type) {
-        case 'SET_SUPPLIER_DATA':
-            return{...state, data: action.payload.data};
-            break;
+        case 'RESET_COLLECT_LAST':
+            return { ...state, data: initialState };
+        case 'SET_COLLECT_LAST':
+            return { ...state, data: action.payload.lastCollect };
+        default:
+            return state;
     }
-
-    return state;
 }

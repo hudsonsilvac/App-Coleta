@@ -8,15 +8,11 @@ const initialState: IndexProps = {
     }
 };
 
-export default (state = initialState, action: any) => {
+export default (state = initialState, action: { type: string, payload: IndexProps }) => {
     switch(action.type) {
-        case 'SET_LOGIN_TOKEN':
-            return{...state, token: action.payload.token};
-            break;
         case 'SET_LOGIN_DATA':
-            return{...state, data: action.payload.data};
-            break;
+            return { ...state, data: action.payload.data };
+        default:
+            return state;
     }
-
-    return state;
 }
