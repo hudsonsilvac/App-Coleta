@@ -1,8 +1,10 @@
 import { ItemType } from "../../atomic/organisms/item/models";
+import { CollectionsTypes } from "../../services/redux/reducers/collections/models";
 import { SuppliersTypes } from "../../services/redux/reducers/suppliers/models";
 
 export interface IndexProps {
     dataSupplier: SuppliersTypes['data']
+    setLastCollect: (data: CollectionsTypes['lastCollect']) => void;
 }
 
 export interface ViewProps {

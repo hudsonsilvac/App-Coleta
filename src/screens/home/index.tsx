@@ -18,6 +18,9 @@ import { CollectionProps } from "../../services/api/collections/models";
 
 import { IndexProps } from "./models";
 import View from "./view";
+import { CollectionsTypes } from "../../services/redux/reducers/collections/models";
+import reactotron from "reactotron-react-native";
+import { LoginTypes } from "../../services/redux/reducers/login/models";
 
 const List: ListDataType[] = [
     {
@@ -27,23 +30,26 @@ const List: ListDataType[] = [
     },
     {
         id: 1,
+        text: 'Realizadas',
+        selected: success
+    },
+    {
+        id: 2,
         text: 'Não iniciadas',
         selected: normal
     },
     {
-        id: 2,
-        text: 'A fazer',
+        id: 3,
+        text: 'Não realizadas',
         selected: primary
     },
-    {
-        id: 3,
-        text: 'Realizadas',
-        selected: success
-    }
 ]
 
 const Home: React.FC<IndexProps> = ({
-    setSupplierData
+    dataUser,
+    setSupplierData,
+    setReset,
+    lastCollect,
 }) => {
     const navigation = useNavigation<NativeStackNavigationProp<StackProps>>()
 
@@ -60,24 +66,26 @@ const Home: React.FC<IndexProps> = ({
     const [supplierSuccess, setSupplierSuccess] = useState<SuppliersTypes['data'][]>([])
 
     useEffect(() => {
+        // setReset()
+        reactotron.warn!!(lastCollect)
         loadData()
-    }, [])
+    }, [lastCollect])
 
     const loadData = () => {
-        collections.listToCollect({ codMotorista: '102' })
+        collections.listToCollect({ codMotorista: dataUser.id })
         .then((data: CollectionProps[]) => setSupplierToCollect(data))
         
-        collections.listToDo({ codMotorista: '102' })
+        collections.listToDo({ codMotorista: dataUser.id })
         .then((data: CollectionProps[]) => setSupplierToDo(data))
 
-        collections.listSuccess({ codMotorista: '102' })
+        collections.listSuccess({ codMotorista: dataUser.id })
         .then((data: CollectionProps[]) => setSupplierSuccess(data))
     }
 
     return (
         <Main pd statusBar={{ barStyle: 'dark-content' }}>
             <View
-                user='Glaziani'
+                user={dataUser.name.split(' ')[0]}
                 search={search}
                 setSearch={setSearch}
                 providersToCollect={supplierToCollect}
@@ -93,15 +101,19 @@ const Home: React.FC<IndexProps> = ({
 }
 
 const mapStateToProps = ({
-    suppliersReducer
+    loginReducer,
+    collectionsReducer,
 }: {
-    suppliersReducer: SuppliersTypes
+    loginReducer: LoginTypes,
+    collectionsReducer: CollectionsTypes,
 }) => ({
-    data: suppliersReducer.data,
+    dataUser: loginReducer.data,
+    lastCollect: collectionsReducer.lastCollect
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
     setSupplierData: (data: SuppliersTypes['data']) => dispatch({ type: 'SET_SUPPLIER_DATA', payload: { data } }),
+    setReset: (data) => dispatch({ type: 'RESET_COLLECT_LAST', payload: { data } }),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

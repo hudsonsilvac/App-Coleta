@@ -29,9 +29,11 @@ import products from "../../services/api/products";
 import { ProductsProps } from "../../services/api/products/models";
 import { getDateCurrent } from "../../constants/date";
 import collections from "../../services/api/collections";
+import { CollectionsTypes } from "../../services/redux/reducers/collections/models";
 
 const Collect: React.FC<IndexProps> = ({
-    dataSupplier
+    dataSupplier,
+    setLastCollect
 }) => {
     const navigation = useNavigation<NativeStackNavigationProp<StackProps>>()
     const route = useRoute<RouteProp<StackProps, 'Collect'>>().params;
@@ -40,8 +42,10 @@ const Collect: React.FC<IndexProps> = ({
     const [items, setItems] = useState<ItemType[]>([])
 
     useEffect(() => {
-        connect()
+        // connect()
         listData()
+        setLastCollect('123')
+        reactotron.warn!!(dataSupplier)
     }, [])
 
     const connect = () => {
@@ -148,6 +152,10 @@ const Collect: React.FC<IndexProps> = ({
             numCar
         })
 
+        setLastCollect(codOrdemColeta)
+
+        return
+
         await BluetoothEscposPrinter.printText('--------------------------------', {
             encoding: "Cp857",
             codepage: 13,
@@ -176,7 +184,7 @@ const Collect: React.FC<IndexProps> = ({
             widthtimes: 3,
             heigthtimes: 3,
         });
-        await BluetoothEscposPrinter.printText(`Código: ${dataSupplier.CODORDEMCOLETA}`, {
+        await BluetoothEscposPrinter.printText(`Codigo: ${dataSupplier.CODORDEMCOLETA}`, {
             encoding: "Cp857",
             codepage: 13,
             fonttype: 1,
@@ -304,6 +312,8 @@ const mapStateToProps = ({
     dataSupplier: suppliersReducer.data,
 })
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({})
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+    setLastCollect: (data: CollectionsTypes['lastCollect']) => dispatch({ type: 'SET_COLLECT_LAST', payload: { data } })
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Collect);

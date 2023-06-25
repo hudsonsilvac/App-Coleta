@@ -28,9 +28,27 @@ const View: React.FC<ViewProps> = ({
         <Text type='H2' color={primary} text={`Olá, ${user}!`} />
         <Text type='H3' text='Pronto para coletar?' mt='5px' mb='20px' />
         <List data={list} selected={listItemSelected} setSelected={setListItemSelected} />
-        <Input placeholder='Procurar fornecedores' value={search} onChangeText={setSearch} mt='20px' />
+        {/* <Input placeholder='Procurar fornecedores' value={search} onChangeText={setSearch} mt='20px' /> */}
         {
             (listItemSelected === 0 || listItemSelected === 1)
+            && (
+                <>
+                    <Text type='H3' text='Realizadas' weight='700' mt='20px' mb='20px' />
+                    {
+                        providersSuccess.map((item, index) => (
+                            <BoxValue
+                                text={item.FORNECEDOR}
+                                value={{ description: boxID(item.FORNECEDOR), state: 'success' }}
+                                onPress={() => providerData(item)}
+                                key={index}
+                            />
+                        ))
+                    }
+                </>
+            )
+        }
+        {
+            (listItemSelected === 0 || listItemSelected === 2)
             && (
                 <>
                     <Text type='H3' text='Não iniciadas' weight='700' mt='20px' mb='20px' />
@@ -48,33 +66,15 @@ const View: React.FC<ViewProps> = ({
             )
         }
         {
-            (listItemSelected === 0 || listItemSelected === 2)
+            (listItemSelected === 0 || listItemSelected === 3)
             && (
                 <>
-                    <Text type='H3' text='A fazer' weight='700' mt='20px' mb='20px' />
+                    <Text type='H3' text='Não realizadas' weight='700' mt='20px' mb='20px' />
                     {
                         providersToDo.map((item, index) => (
                             <BoxValue
                                 text={item.FORNECEDOR}
                                 value={{ description: boxID(item.FORNECEDOR), state: 'primary' }}
-                                onPress={() => providerData(item)}
-                                key={index}
-                            />
-                        ))
-                    }
-                </>
-            )
-        }
-        {
-            (listItemSelected === 0 || listItemSelected === 3)
-            && (
-                <>
-                    <Text type='H3' text='Realizadas' weight='700' mt='20px' mb='20px' />
-                    {
-                        providersSuccess.map((item, index) => (
-                            <BoxValue
-                                text={item.FORNECEDOR}
-                                value={{ description: boxID(item.FORNECEDOR), state: 'success' }}
                                 onPress={() => providerData(item)}
                                 key={index}
                             />

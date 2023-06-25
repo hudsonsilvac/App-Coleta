@@ -1,8 +1,15 @@
 import { ListDataType } from "../../atomic/atoms/list/models";
+import { CollectionsTypes } from "../../services/redux/reducers/collections/models";
+import { LoginTypes } from "../../services/redux/reducers/login/models";
 import { SuppliersTypes } from "../../services/redux/reducers/suppliers/models";
 
 export interface IndexProps {
+    dataUser: LoginTypes['data']
     setSupplierData: (data: SuppliersTypes['data']) => void;
+    setReset: any;
+    lastCollect: any;
+    // lastCollect: CollectionsTypes['lastCollect']
+    data: any
 }
 
 export interface ViewProps {
