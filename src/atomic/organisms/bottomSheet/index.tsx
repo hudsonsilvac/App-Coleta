@@ -39,7 +39,13 @@ const BottomSheet: React.FC<IndexProps> = ({
                 {
                     buttonConfirm && (
                         <Footer>
-                            <Button type={buttonConfirm?.type} text={buttonConfirm?.text} onPress={buttonConfirm?.onPress} larger />
+                            <Button
+                                type={buttonConfirm?.type}
+                                text={buttonConfirm?.text}
+                                onPress={buttonConfirm?.onPress}
+                                larger
+                                isLoading={buttonConfirm.isLoading}
+                            />
                         </Footer>
                     )
                 }

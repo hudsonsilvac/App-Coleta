@@ -18,4 +18,5 @@ type ButtonConfirm = {
     text: string;
     disabled?: boolean;
     onPress: () => void;
+    isLoading?: boolean;
 }
