@@ -8,6 +8,7 @@ import BackImg from '../../../assets/vectors/Back.png'
 
 import { Main, Back, BackIcon } from "./style";
 import IndexProps from "./models";
+import { ActivityIndicator } from "react-native";
 
 const Button: React.FC<IndexProps> = ({
     type = 'primary',
@@ -15,6 +16,7 @@ const Button: React.FC<IndexProps> = ({
     onPress,
     disabled,
     larger,
+    isLoading,
     mt,
     ml,
     mr,
@@ -31,7 +33,11 @@ const Button: React.FC<IndexProps> = ({
                     larger={larger}
                     mt={mt} ml={ml} mr={mr} mb={mb}
                 >
-                    <Text type='H4' text={String(text)} color={white} weight='700' />
+                    {
+                        isLoading
+                        ? <ActivityIndicator size={30} color={white} style={{ paddingHorizontal: 30 }} />
+                        : <Text type='H4' text={String(text)} color={white} weight='700' />
+                    }
                 </Main>
             )
         case 'back':

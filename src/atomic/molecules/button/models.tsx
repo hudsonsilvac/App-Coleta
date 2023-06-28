@@ -9,6 +9,7 @@ export default interface IndexProps extends Margins {
     onPress: () => void;
     disabled?: boolean
     larger?: boolean;
+    isLoading?: boolean;
 }
 
 export type ButtonTypes = 'primary' | 'success' | 'back'
