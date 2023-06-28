@@ -49,7 +49,8 @@ const listSuccess = () => {
                                 ENDERECO: result.rows.item(i).ENDERECO,
                                 TELEFONE: result.rows.item(i).TELEFONE,
                                 QTTOTALCOLETADA: result.rows.item(i).QTTOTALCOLETADA,
-                                VLTOTAL: result.rows.item(i).VLTOTAL
+                                VLTOTAL: result.rows.item(i).VLTOTAL,
+                                TIPO: result.rows.item(i).TIPO,
                             }
                             array.push(json)
                         }
@@ -84,7 +85,8 @@ const listToCollect = () => {
                                 ENDERECO: result.rows.item(i).ENDERECO,
                                 TELEFONE: result.rows.item(i).TELEFONE,
                                 QTTOTALCOLETADA: result.rows.item(i).QTTOTALCOLETADA,
-                                VLTOTAL: result.rows.item(i).VLTOTAL
+                                VLTOTAL: result.rows.item(i).VLTOTAL,
+                                TIPO: result.rows.item(i).TIPO,
                             }
                             array.push(json)
                         }
@@ -119,7 +121,8 @@ const listToDo = () => {
                                 ENDERECO: result.rows.item(i).ENDERECO,
                                 TELEFONE: result.rows.item(i).TELEFONE,
                                 QTTOTALCOLETADA: result.rows.item(i).QTTOTALCOLETADA,
-                                VLTOTAL: result.rows.item(i).VLTOTAL
+                                VLTOTAL: result.rows.item(i).VLTOTAL,
+                                TIPO: result.rows.item(i).TIPO,
                             }
                             array.push(json)
                         }
