@@ -31,4 +31,6 @@ export interface ViewProps {
     setPassword: (value: string) => void;
     confirm: () => void;
     insertKM: () => void;
+
+    isLoading: boolean;
 }

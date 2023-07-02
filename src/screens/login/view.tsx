@@ -32,7 +32,8 @@ const View: React.FC<ViewProps> = ({
     password,
     setPassword,
     confirm,
-    insertKM
+    insertKM,
+    isLoading
 }) => (
     <Main>
         <Background source={Bg} justifyContent='flex-end'>
@@ -126,7 +127,8 @@ const View: React.FC<ViewProps> = ({
                 buttonConfirm={{
                     text: 'Salvar',
                     type: 'primary',
-                    onPress: insertKM
+                    onPress: insertKM,
+                    isLoading
                 }}
             >
                 <Input
