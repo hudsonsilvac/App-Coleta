@@ -158,6 +158,26 @@ const insert = ({ CODFILIAL, CODFORNEC, CODORDEMCOLETA, DTCOLETA, DTULTALTERACAO
     })
 }
 
+const update = ({ TIPO, DTCOLETA, DTULTALTERACAO, CODFORNEC }: IndexType) => {
+    return new Promise<boolean>((resolve, reject) => {
+        db.transaction((tx: Transaction) => {
+            tx.executeSql(
+                `UPDATE
+                    Collections
+                SET
+                    TIPO = ?,
+                    DTCOLETA = ?,
+                    DTULTALTERACAO = ?
+                WHERE
+                    CODFORNEC = ?
+                `,
+                [TIPO, DTCOLETA, DTULTALTERACAO, CODFORNEC],
+                (tx: Transaction, result: ResultSet) => resolve(!!result.rows.length)
+            )
+        })
+    })
+}
+
 const deleteAll = () => {
     return new Promise<boolean>((resolve, reject) => {
         db.transaction((tx: Transaction) => {
@@ -175,5 +195,6 @@ export default {
     listToCollect,
     listToDo,
     insert,
+    update,
     deleteAll,
 }

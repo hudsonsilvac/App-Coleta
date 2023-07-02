@@ -1,5 +1,10 @@
 export type IndexType = {
-    codMotorista: string;
+    CODFORNEC: string;
+    CODPROD?: string | number;
+    DESCRICAO?: string;
+    QTPREVISAO?: string;
+    PCOMPRA?: string;
+    COLETA?: string;
 }
 
 export interface ProductsProps {

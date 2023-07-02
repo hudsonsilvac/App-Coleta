@@ -14,7 +14,8 @@ const initialState: IndexProps = {
         BAIRRO: '',
         CIDADE_ESTADO: '',
         ENDERECO: '',
-        TELEFONE: ''
+        TELEFONE: '',
+        TIPO: ''
     },
 };
 

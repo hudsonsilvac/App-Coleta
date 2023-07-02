@@ -6,7 +6,7 @@ const db = SQLite.openDatabase(
         location: 'default'
     },
     () => {},
-    error => { console.log(error) }
+    error => { console.error(error) }
 );
 
 export default db;

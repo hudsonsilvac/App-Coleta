@@ -18,4 +18,5 @@ type Data = {
     DTULTALTERACAO: string
     QTTOTALCOLETADA: string
     VLTOTAL: string
+    TIPO: string;
 }
