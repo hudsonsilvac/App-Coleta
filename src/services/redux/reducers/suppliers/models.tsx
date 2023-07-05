@@ -7,6 +7,7 @@ export type SuppliersTypes = IndexProps;
 type Data = {
     CODORDEMCOLETA: string
     CODFILIAL: string
+    FILIAL: string;
     DTCOLETA: string
     CODFORNEC: string
     FORNECEDOR: string
