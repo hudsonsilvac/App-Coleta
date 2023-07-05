@@ -6,13 +6,13 @@ import { SuppliersTypes } from "../../services/redux/reducers/suppliers/models";
 export interface IndexProps {
     dataUser: LoginTypes['data']
     setSupplierData: (data: SuppliersTypes['data']) => void;
-    setReset: any;
-    lastCollect: any;
-    // lastCollect: CollectionsTypes['lastCollect']
-    data: any
+    lastCollect: CollectionsTypes['lastCollect']
 }
 
 export interface ViewProps {
+    showSincronize: boolean;
+    sincronize: () => void;
+    isSincronize: boolean;
     user: string;
     search: string;
     setSearch: (value: string) => void;

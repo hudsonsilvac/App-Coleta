@@ -11,8 +11,12 @@ import { ViewProps } from "./models";
 import List from "../../atomic/atoms/list";
 import BoxCommon from "../../atomic/atoms/boxes/boxCommon";
 import { boxID } from "../../constants/formats";
+import Button from "../../atomic/molecules/button";
 
 const View: React.FC<ViewProps> = ({
+    showSincronize,
+    sincronize,
+    isSincronize,
     user,
     search,
     setSearch,
@@ -27,8 +31,20 @@ const View: React.FC<ViewProps> = ({
     <Container>
         <Text type='H2' color={primary} text={`Olá, ${user}!`} />
         <Text type='H3' text='Pronto para coletar?' mt='5px' mb='20px' />
+        {
+            showSincronize && (
+                <BoxCommon alignItems='center' width='100%'>
+                    <Button
+                        text='Sincronizar dados'
+                        onPress={sincronize}
+                        isLoading={isSincronize}
+                        larger
+                        mb='20px'
+                    />
+                </BoxCommon>
+            )
+        }
         <List data={list} selected={listItemSelected} setSelected={setListItemSelected} />
-        {/* <Input placeholder='Procurar fornecedores' value={search} onChangeText={setSearch} mt='20px' /> */}
         {
             (listItemSelected === 0 || listItemSelected === 1)
             && (

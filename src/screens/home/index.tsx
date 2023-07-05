@@ -12,15 +12,20 @@ import { black, normal, primary, success } from "../../atomic/constants/colors";
 import Main from "../../atomic/atoms/main";
 import { ListDataType } from "../../atomic/atoms/list/models";
 
-import collections from "../../services/api/collections";
-import { CollectionProps } from "../../services/api/collections/models";
+import { CollectionsTypes } from "../../services/redux/reducers/collections/models";
+import { LoginTypes } from "../../services/redux/reducers/login/models";
 
+import DBCollections from '../../services/sqlite/collections'
+import DBProducts from '../../services/sqlite/products'
+import { ProductsProps } from "../../services/sqlite/products/models";
+import { CollectionProps } from "../../services/sqlite/collections/models";
+
+import NetInfo from "@react-native-community/netinfo";
 
 import { IndexProps } from "./models";
 import View from "./view";
-import { CollectionsTypes } from "../../services/redux/reducers/collections/models";
-import reactotron from "reactotron-react-native";
-import { LoginTypes } from "../../services/redux/reducers/login/models";
+import collections from "../../services/api/collections";
+import { Alert } from "react-native";
 
 const List: ListDataType[] = [
     {
@@ -48,7 +53,6 @@ const List: ListDataType[] = [
 const Home: React.FC<IndexProps> = ({
     dataUser,
     setSupplierData,
-    setReset,
     lastCollect,
 }) => {
     const navigation = useNavigation<NativeStackNavigationProp<StackProps>>()
@@ -65,26 +69,94 @@ const Home: React.FC<IndexProps> = ({
     const [supplierToDo, setSupplierToDo] = useState<SuppliersTypes['data'][]>([])
     const [supplierSuccess, setSupplierSuccess] = useState<SuppliersTypes['data'][]>([])
 
+    const [showSincronize, setShowSincronize] = useState<boolean>(false)
+    const [isSincronize, setIsSincronize] = useState<boolean>(false)
+
     useEffect(() => {
-        // setReset()
-        reactotron.warn!!(lastCollect)
+        NetInfo.fetch().then(state => {
+            if (state.isConnected == false) setShowSincronize(false)
+            else setShowSincronize(true)
+        });
+    }, [])
+
+    const sincronize = () => {
+        setIsSincronize(true)
+
+        DBCollections.listSuccess()
+        .then((data: CollectionProps[]) => {
+            data.map(item => {
+                DBProducts.listAll({ CODFORNEC: item.CODFORNEC })
+                .then((dataP: ProductsProps[]) => {
+                    let codOrdemColeta = item.CODORDEMCOLETA
+                    let DTULAlteracao = item.DTULTALTERACAO
+                    let dtHoraColeta = item.DTCOLETA
+                    let data = item.DTCOLETA
+                    let dtHoraStatus = item.DTCOLETA
+                    let numCar = '0'
+
+                    let qtTotalColetada = String(dataP.reduce((accumulattor, total) => Number(accumulattor) + Number(total.COLETA), 0))
+                    let qtItensColetados = String(dataP.reduce((accumulattor, total) => Number(total) > 0 ? Number(accumulattor) + 1 : Number(accumulattor), 0))
+                    let qtItensPrevistos = String(dataP.length)
+                    let qtPrevista = String(dataP.reduce((valor, total) => Number(valor) + Number(total.QTPREVISAO), 0))
+                    let pesoColeta = String(dataP.reduce((accumulattor, total) => Number(accumulattor) + Number(total.COLETA), 0))
+
+                    let vlTotal = String(dataP.reduce((accumulattor, total) => Number(accumulattor) + (Number(total.PCOMPRA || 0) * Number(total.COLETA || 0)), 0))
+                    let vlColeta = String(dataP.reduce((accumulattor, total) => Number(accumulattor) + (Number(total.PCOMPRA || 0) * Number(total.COLETA || 0)), 0))
+
+                    let newItems = dataP.map(item => ({
+                        codProd: String(item.CODPROD),
+                        quantidade: item.COLETA,
+                        pCompra: item.PCOMPRA,
+                        qtPrevista: item.QTPREVISAO,
+                    }))
+            
+                    collections.addItem({
+                        itens: newItems,
+                        codOrdemColeta,
+                        DTULAlteracao,
+                        qtTotalColetada,
+                        qtItensColetados,
+                        qtItensPrevistos,
+                        vlTotal,
+                        qtPrevista,
+                        dtHoraColeta,
+                        data,
+                        dtHoraStatus,
+                        pesoColeta,
+                        vlColeta,
+                        numCar
+                    })
+                })
+            })
+        })
+
+        setTimeout(() => {
+            Alert.alert('Sincronização', 'Sincronização concluída com sucesso!')
+            setIsSincronize(false)
+        }, 10000);
+    }
+
+    useEffect(() => {
         loadData()
     }, [lastCollect])
 
     const loadData = () => {
-        collections.listToCollect({ codMotorista: dataUser.id })
+        DBCollections.listToCollect()
         .then((data: CollectionProps[]) => setSupplierToCollect(data))
         
-        collections.listToDo({ codMotorista: dataUser.id })
+        DBCollections.listToDo()
         .then((data: CollectionProps[]) => setSupplierToDo(data))
 
-        collections.listSuccess({ codMotorista: dataUser.id })
+        DBCollections.listSuccess()
         .then((data: CollectionProps[]) => setSupplierSuccess(data))
     }
 
     return (
         <Main pd statusBar={{ barStyle: 'dark-content' }}>
             <View
+                showSincronize={showSincronize}
+                sincronize={sincronize}
+                isSincronize={isSincronize}
                 user={dataUser.name.split(' ')[0]}
                 search={search}
                 setSearch={setSearch}
@@ -108,12 +180,11 @@ const mapStateToProps = ({
     collectionsReducer: CollectionsTypes,
 }) => ({
     dataUser: loginReducer.data,
-    lastCollect: collectionsReducer.lastCollect
+    lastCollect: collectionsReducer
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
     setSupplierData: (data: SuppliersTypes['data']) => dispatch({ type: 'SET_SUPPLIER_DATA', payload: { data } }),
-    setReset: (data) => dispatch({ type: 'RESET_COLLECT_LAST', payload: { data } }),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
