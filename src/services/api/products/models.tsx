@@ -1,5 +1,6 @@
 export type IndexType = {
     codMotorista: string;
+    codFilial: string;
 }
 
 export interface ProductsProps {

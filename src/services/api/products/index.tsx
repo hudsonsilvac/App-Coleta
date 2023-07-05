@@ -1,9 +1,9 @@
 import api from '../index'
 import { IndexType, ProductsProps } from './models'
 
-const listAll = ({ codMotorista }: IndexType) => {
+const listAll = ({ codMotorista, codFilial }: IndexType) => {
     return new Promise<ProductsProps[]>(async (resolve, reject) => {
-        await api.post('produtos/produtos-habilitados-para-coleta.php', { codMotorista })
+        await api.post('produtos/produtos-habilitados-para-coleta.php', { codMotorista, codFilial })
         .then(response => {
             let res:ProductsProps[] = response.data.produtosHabilitados
             let array:ProductsProps[] = []
