@@ -170,7 +170,7 @@ const Login: React.FC<IndexProps> = ({
                 })
             })
 
-            products.listAll({ codMotorista: userSelected.MATRICULA })
+            products.listAll({ codMotorista: userSelected.MATRICULA, codFilial: storeSelected.CODIGO })
             .then((data: ProductsProps[]) => {
                 data.map(item => {
                     DBProducts.insert({
