@@ -11,6 +11,7 @@ const listToCollect = ({ codMotorista }: IndexType) => {
             for (let i = 0; i < res?.length; i++ ) {
                 let json: CollectionProps = {
                     CODFILIAL: res[i].CODFILIAL,
+                    FILIAL: res[i].FILIAL,
                     CODFORNEC: res[i].CODFORNEC,
                     CODORDEMCOLETA: res[i].CODORDEMCOLETA,
                     DTCOLETA: res[i].DTCOLETA,
@@ -42,6 +43,7 @@ const listToDo = ({ codMotorista }: IndexType) => {
             for (let i = 0; i < res?.length; i++ ) {
                 let json: CollectionProps = {
                     CODFILIAL: res[i].CODFILIAL,
+                    FILIAL: res[i].FILIAL,
                     CODFORNEC: res[i].CODFORNEC,
                     CODORDEMCOLETA: res[i].CODORDEMCOLETA,
                     DTCOLETA: res[i].DTCOLETA,
@@ -73,6 +75,7 @@ const listSuccess = ({ codMotorista }: IndexType) => {
             for (let i = 0; i < res?.length; i++ ) {
                 let json: CollectionProps = {
                     CODFILIAL: res[i].CODFILIAL,
+                    FILIAL: res[i].FILIAL,
                     CODFORNEC: res[i].CODFORNEC,
                     CODORDEMCOLETA: res[i].CODORDEMCOLETA,
                     DTCOLETA: res[i].DTCOLETA,

@@ -1,6 +1,7 @@
 export type IndexType = {
     CODORDEMCOLETA?: string
     CODFILIAL?: string
+    FILIAL?: string;
     DTCOLETA?: string
     CODFORNEC?: string
     FORNECEDOR?: string
@@ -18,6 +19,7 @@ export type IndexType = {
 export interface CollectionProps {
     CODORDEMCOLETA: string
     CODFILIAL: string
+    FILIAL: string;
     DTCOLETA: string
     CODFORNEC: string
     FORNECEDOR: string

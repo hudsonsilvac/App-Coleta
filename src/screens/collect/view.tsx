@@ -20,6 +20,7 @@ const View: React.FC<ViewProps> = ({
     total,
     showModal,
     setShowModal,
+    type,
     confirm
 }) => {
     return (
@@ -102,9 +103,13 @@ const View: React.FC<ViewProps> = ({
                     text={`Total: ${total}`}
                 />
             </BoxCommon>
-            <BoxCommon width='100%' alignItems='center' mt='50px' mb='50px'>
-                <Button type='success' text='Finalizar' larger onPress={() => setShowModal(true)} />
-            </BoxCommon>
+            {
+                type != '1' && (
+                    <BoxCommon width='100%' alignItems='center' mt='50px' mb='50px'>
+                        <Button type='success' text='Finalizar' larger onPress={() => setShowModal(true)} />
+                    </BoxCommon>
+                )
+            }
             <BottomSheet
                     title='Confirmação'
                     description='Tem certeza que você deseja finalizar esta coleta?'

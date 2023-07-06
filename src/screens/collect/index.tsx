@@ -22,30 +22,28 @@ import { ItemType } from "../../atomic/organisms/item/models";
 
 import Bg from '../../assets/background/splashCollect.png'
 
+import DBProducts from "../../services/sqlite/products";
+import DBCollections from "../../services/sqlite/collections";
+import { CollectionsTypes } from "../../services/redux/reducers/collections/models";
+import { ProductsProps } from "../../services/api/products/models";
+
 import View from "./view";
 import { IndexProps } from "./models";
-import reactotron from "reactotron-react-native";
-import products from "../../services/api/products";
-import { ProductsProps } from "../../services/api/products/models";
 import { getDateCurrent } from "../../constants/date";
-import collections from "../../services/api/collections";
-import { CollectionsTypes } from "../../services/redux/reducers/collections/models";
 
 const Collect: React.FC<IndexProps> = ({
     dataSupplier,
     setLastCollect
 }) => {
     const navigation = useNavigation<NativeStackNavigationProp<StackProps>>()
-    const route = useRoute<RouteProp<StackProps, 'Collect'>>().params;
 
     const [showModal, setShowModal] = useState<boolean>(false)
     const [items, setItems] = useState<ItemType[]>([])
+    const [isInsert, setIsInsert] = useState<boolean>(false)
 
     useEffect(() => {
-        // connect()
+        connect()
         listData()
-        setLastCollect('123')
-        reactotron.warn!!(dataSupplier)
     }, [])
 
     const connect = () => {
@@ -69,13 +67,13 @@ const Collect: React.FC<IndexProps> = ({
     }
 
     const listData = () => {
-        products.listAll({ codigoFilial: dataSupplier.CODFILIAL, codigoFornecedor: dataSupplier.CODFORNEC })
+        DBProducts.listAll({ CODFORNEC: dataSupplier.CODFORNEC })
         .then((data: ProductsProps[]) => {
             let dataProduct: ItemType[] = data.map(item => ({
                 id: item.CODPROD,
                 description: item.DESCRICAO,
                 prevision: item.QTPREVISAO || '0',
-                value: '',
+                value: item.COLETA || '',
                 price: item.PCOMPRA || '0'
             }))
 
@@ -93,69 +91,49 @@ const Collect: React.FC<IndexProps> = ({
             }
         ))
         setItems(newData)
+        if (Number(value) > 0)
+            setIsInsert(true)
     }
 
     const confirm = async () => {
-        let codOrdemColeta = dataSupplier.CODORDEMCOLETA
-        let DTULAlteracao = dataSupplier.DTULTALTERACAO
-        let dtHoraColeta = getDateCurrent()
-        let data = getDateCurrent()
-        let dtHoraStatus = getDateCurrent()
-        let numCar = '0'
+        if (!isInsert) {
+            Alert.alert('Aviso', 'Insira algum item primeiro!')
+            return
+        }
 
-        let qtTotalColetada = String(items.reduce((accumulattor, total) => Number(accumulattor) + Number(total.value), 0))
-        let qtItensColetados = String(items.reduce((accumulattor, total) => Number(total.value) > 0 ? Number(accumulattor) + 1 : Number(accumulattor), 0))
-        let qtItensPrevistos = String(items.length)
-        let qtPrevista = String(items.reduce((valor, total) => Number(valor) + Number(total.prevision), 0))
-        let pesoColeta = String(items.reduce((accumulattor, total) => Number(accumulattor) + Number(total.value), 0))
+        setLastCollect(dataSupplier.CODORDEMCOLETA)
 
-        let vlTotal = String(items.reduce((accumulattor, total) => Number(accumulattor) + (Number(total.price || 0) * Number(total.value || 0)), 0))
-        let vlColeta = String(items.reduce((accumulattor, total) => Number(accumulattor) + (Number(total.price || 0) * Number(total.value || 0)), 0))
-
-        reactotron.warn!!({
-            codOrdemColeta,
-            DTULAlteracao,
-            qtTotalColetada,
-            qtItensColetados,
-            qtItensPrevistos,
-            vlTotal,
-            qtPrevista,
-            dtHoraColeta,
-            data,
-            dtHoraStatus,
-            pesoColeta,
-            vlColeta,
-            numCar
+        DBCollections.update({
+            TIPO: '1',
+            DTCOLETA: getDateCurrent(),
+            DTULTALTERACAO: getDateCurrent(),
+            CODFORNEC: dataSupplier.CODFORNEC
         })
 
-        let newItems = items.map(item => ({
-            codProd: String(item.id),
-            quantidade: item.value,
-            pCompra: item.price,
-            qtPrevista: item.prevision,
-        }))
+        for (let i = 0; i < items.length; i++) {
+            if (Number(items[i].value) > 0) {
+                await DBProducts.update({
+                    CODFORNEC: dataSupplier.CODFORNEC,
+                    CODPROD: items[i].id,
+                    COLETA: items[i].value
+                })
+            }
+        }
 
-        collections.addItem({
-            itens: newItems,
-            codOrdemColeta,
-            DTULAlteracao,
-            qtTotalColetada,
-            qtItensColetados,
-            qtItensPrevistos,
-            vlTotal,
-            qtPrevista,
-            dtHoraColeta,
-            data,
-            dtHoraStatus,
-            pesoColeta,
-            vlColeta,
-            numCar
-        })
-
-        setLastCollect(codOrdemColeta)
-
-        return
-
+        await BluetoothEscposPrinter.printText('--------------------------------', {
+            encoding: "Cp857",
+            codepage: 13,
+            fonttype: 0,
+            widthtimes: 3,
+            heigthtimes: 3,
+        });
+        await BluetoothEscposPrinter.printText(`${dataSupplier.FILIAL.padStart(21, ' ')}`, {
+            encoding: "Cp857",
+            codepage: 13,
+            fonttype: 0,
+            widthtimes: 3,
+            heigthtimes: 3,
+        });
         await BluetoothEscposPrinter.printText('--------------------------------', {
             encoding: "Cp857",
             codepage: 13,
@@ -298,6 +276,7 @@ const Collect: React.FC<IndexProps> = ({
                 total={currency(items.reduce((valor, total) => Number(valor) + Number(total.value), 0), 2, 3, '.', ',')}
                 showModal={showModal}
                 setShowModal={setShowModal}
+                type={dataSupplier.TIPO}
                 confirm={confirm}
             />
         </Main>
@@ -313,7 +292,7 @@ const mapStateToProps = ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-    setLastCollect: (data: CollectionsTypes['lastCollect']) => dispatch({ type: 'SET_COLLECT_LAST', payload: { data } })
+    setLastCollect: (lastCollect: CollectionsTypes['lastCollect']) => dispatch({ type: 'SET_COLLECT_LAST', payload: { lastCollect } })
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Collect);

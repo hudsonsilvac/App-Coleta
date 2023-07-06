@@ -103,6 +103,7 @@ const Login: React.FC<IndexProps> = ({
                 data.map(item => {
                     DBCollections.insert({
                         CODFILIAL: item.CODFILIAL,
+                        FILIAL: item.FILIAL,
                         CODFORNEC: item.CODFORNEC,
                         CODORDEMCOLETA: item.CODORDEMCOLETA,
                         DTCOLETA: item.DTCOLETA,
@@ -128,6 +129,7 @@ const Login: React.FC<IndexProps> = ({
                 data.map(item => {
                     DBCollections.insert({
                         CODFILIAL: item.CODFILIAL,
+                        FILIAL: item.FILIAL,
                         CODFORNEC: item.CODFORNEC,
                         CODORDEMCOLETA: item.CODORDEMCOLETA,
                         DTCOLETA: item.DTCOLETA,
@@ -153,6 +155,7 @@ const Login: React.FC<IndexProps> = ({
                 data.map(item => {
                     DBCollections.insert({
                         CODFILIAL: item.CODFILIAL,
+                        FILIAL: item.FILIAL,
                         CODFORNEC: item.CODFORNEC,
                         CODORDEMCOLETA: item.CODORDEMCOLETA,
                         DTCOLETA: item.DTCOLETA,

@@ -8,6 +8,7 @@ db.transaction((tx: Transaction) => {
         'Collections ' +
         '(ID INTEGER PRIMARY KEY NOT NULL, ' +
         'CODFILIAL TEXT, ' +
+        'FILIAL TEXT, ' +
         'CODFORNEC TEXT,' +
         'CODORDEMCOLETA TEXT, ' +
         'DTCOLETA TEXT, ' +
@@ -38,6 +39,7 @@ const listSuccess = () => {
                         for (let i = 0; i < result.rows.length; i++) {
                             let json = {
                                 CODFILIAL: result.rows.item(i).CODFILIAL,
+                                FILIAL: result.rows.item(i).FILIAL,
                                 CODFORNEC: result.rows.item(i).CODFORNEC,
                                 CODORDEMCOLETA: result.rows.item(i).CODORDEMCOLETA,
                                 DTCOLETA: result.rows.item(i).DTCOLETA,
@@ -74,6 +76,7 @@ const listToCollect = () => {
                         for (let i = 0; i < result.rows.length; i++) {
                             let json = {
                                 CODFILIAL: result.rows.item(i).CODFILIAL,
+                                FILIAL: result.rows.item(i).FILIAL,
                                 CODFORNEC: result.rows.item(i).CODFORNEC,
                                 CODORDEMCOLETA: result.rows.item(i).CODORDEMCOLETA,
                                 DTCOLETA: result.rows.item(i).DTCOLETA,
@@ -110,6 +113,7 @@ const listToDo = () => {
                         for (let i = 0; i < result.rows.length; i++) {
                             let json = {
                                 CODFILIAL: result.rows.item(i).CODFILIAL,
+                                FILIAL: result.rows.item(i).FILIAL,
                                 CODFORNEC: result.rows.item(i).CODFORNEC,
                                 CODORDEMCOLETA: result.rows.item(i).CODORDEMCOLETA,
                                 DTCOLETA: result.rows.item(i).DTCOLETA,
@@ -134,22 +138,22 @@ const listToDo = () => {
     })
 }
 
-const insert = ({ CODFILIAL, CODFORNEC, CODORDEMCOLETA, DTCOLETA, DTULTALTERACAO, FORNECEDOR,
+const insert = ({ CODFILIAL, FILIAL, CODFORNEC, CODORDEMCOLETA, DTCOLETA, DTULTALTERACAO, FORNECEDOR,
                 POSICAO, BAIRRO, CIDADE_ESTADO, ENDERECO, TELEFONE, QTTOTALCOLETADA,
                 VLTOTAL, TIPO }: IndexType) => {
     return new Promise<boolean>((resolve, reject) => {
         db.transaction((tx: Transaction) => {
             tx.executeSql(
                 `INSERT INTO Collections
-                    (CODFILIAL, CODFORNEC, CODORDEMCOLETA, DTCOLETA, DTULTALTERACAO, FORNECEDOR,
+                    (CODFILIAL, FILIAL, CODFORNEC, CODORDEMCOLETA, DTCOLETA, DTULTALTERACAO, FORNECEDOR,
                     POSICAO, BAIRRO, CIDADE_ESTADO, ENDERECO, TELEFONE, QTTOTALCOLETADA,
                     VLTOTAL, TIPO)
                 VALUES
-                    (?, ?, ?, ?, ?, ?,
+                    (?, ?, ?, ?, ?, ?, ?,
                     ?, ?, ?, ?, ?, ?,
                     ?, ?)
                 `,
-                [CODFILIAL, CODFORNEC, CODORDEMCOLETA, DTCOLETA, DTULTALTERACAO, FORNECEDOR,
+                [CODFILIAL, FILIAL, CODFORNEC, CODORDEMCOLETA, DTCOLETA, DTULTALTERACAO, FORNECEDOR,
                 POSICAO, BAIRRO, CIDADE_ESTADO, ENDERECO, TELEFONE, QTTOTALCOLETADA,
                 VLTOTAL, TIPO],
                 (tx: Transaction, result: ResultSet) => result.rowsAffected > 0 ? resolve(true) : reject(false)
