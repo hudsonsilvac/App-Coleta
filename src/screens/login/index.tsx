@@ -42,7 +42,7 @@ const Login: React.FC<IndexProps> = ({
     const [showKM, setShowKM] = useState<boolean>(false)
     const [initialKM, setInitialKM] = useState<string>('')
 
-    const [password, setPassword] = useState<string>('PADRAO')
+    const [password, setPassword] = useState<string>('')
 
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
