@@ -3,6 +3,7 @@ export interface IndexProps {
     prevision: string;
     value: string;
     setValue: (value: string) => void;
+    disabled?: boolean;
 }
 
 export type ItemType = {

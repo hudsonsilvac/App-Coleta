@@ -11,6 +11,7 @@ const Item: React.FC<IndexProps> = ({
     prevision,
     value,
     setValue,
+    disabled,
 }) => {
     const [icon, setIcon] = useState<string>('');
     const [text, setText] = useState<string>(value)
@@ -56,6 +57,8 @@ const Item: React.FC<IndexProps> = ({
                     onChangeText={setText}
                     placeholder='0'
                     keyboardType='numeric'
+                    editable={!!!disabled}
+                    selectTextOnFocus={!!!disabled}
                 />
             </BoxCommon>
         </Main>

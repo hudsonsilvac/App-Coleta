@@ -92,6 +92,7 @@ const View: React.FC<ViewProps> = ({
                             prevision={item.prevision}
                             value={item.value}
                             setValue={(value) => setItem(value, String(item.id))}
+                            disabled={type === '1'}
                             key={index}
                         />
                     ))
