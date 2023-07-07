@@ -29,7 +29,7 @@ import { ProductsProps } from "../../services/api/products/models";
 
 import View from "./view";
 import { IndexProps } from "./models";
-import { getDateCurrent } from "../../constants/date";
+import { getDateCurrent, getTimeCurrent } from "../../constants/date";
 
 const Collect: React.FC<IndexProps> = ({
     dataSupplier,
@@ -42,7 +42,7 @@ const Collect: React.FC<IndexProps> = ({
     const [isInsert, setIsInsert] = useState<boolean>(false)
 
     useEffect(() => {
-        connect()
+        // connect()
         listData()
     }, [])
 
@@ -105,8 +105,8 @@ const Collect: React.FC<IndexProps> = ({
 
         DBCollections.update({
             TIPO: '1',
-            DTCOLETA: getDateCurrent(),
-            DTULTALTERACAO: getDateCurrent(),
+            DTCOLETA: `${getDateCurrent()} ${getTimeCurrent()}`,
+            DTULTALTERACAO: `${getDateCurrent()} ${getTimeCurrent()}`,
             CODFORNEC: dataSupplier.CODFORNEC
         })
 

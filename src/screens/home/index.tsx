@@ -80,6 +80,9 @@ const Home: React.FC<IndexProps> = ({
     }, [])
 
     const sincronize = () => {
+        if (isSincronize)
+            return
+
         setIsSincronize(true)
 
         DBCollections.listSuccess()
@@ -95,7 +98,7 @@ const Home: React.FC<IndexProps> = ({
                     let numCar = '0'
 
                     let qtTotalColetada = String(dataP.reduce((accumulattor, total) => Number(accumulattor) + Number(total.COLETA), 0))
-                    let qtItensColetados = String(dataP.reduce((accumulattor, total) => Number(total) > 0 ? Number(accumulattor) + 1 : Number(accumulattor), 0))
+                    let qtItensColetados = String(dataP.reduce((accumulattor, total) => Number(total) > 0 ? Number(accumulattor) + 1 : 1, 0))
                     let qtItensPrevistos = String(dataP.length)
                     let qtPrevista = String(dataP.reduce((valor, total) => Number(valor) + Number(total.QTPREVISAO), 0))
                     let pesoColeta = String(dataP.reduce((accumulattor, total) => Number(accumulattor) + Number(total.COLETA), 0))
