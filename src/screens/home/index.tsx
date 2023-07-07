@@ -50,6 +50,8 @@ const List: ListDataType[] = [
     },
 ]
 
+const delay = 5;
+
 const Home: React.FC<IndexProps> = ({
     dataUser,
     setSupplierData,
@@ -73,10 +75,14 @@ const Home: React.FC<IndexProps> = ({
     const [isSincronize, setIsSincronize] = useState<boolean>(false)
 
     useEffect(() => {
-        NetInfo.fetch().then(state => {
-            if (state.isConnected == false) setShowSincronize(false)
-            else setShowSincronize(true)
-        });
+        let timerNet = setInterval(() => {
+            NetInfo.fetch().then(state => {
+                if (state.isConnected == false) setShowSincronize(false)
+                else setShowSincronize(true)
+            });
+        }, delay * 1000);
+
+        return () => clearInterval(timerNet)
     }, [])
 
     const sincronize = () => {
