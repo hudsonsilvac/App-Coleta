@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { BluetoothManager, BluetoothEscposPrinter } from "tp-react-native-bluetooth-printer";
+import { BluetoothManager, BluetoothEscposPrinter, PrintTextOptions } from "tp-react-native-bluetooth-printer";
 
 import { SuppliersTypes } from "../../services/redux/reducers/suppliers/models";
 
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { StackProps } from "../../routes/models";
 
@@ -31,18 +31,27 @@ import View from "./view";
 import { IndexProps } from "./models";
 import { getDateCurrent, getTimeCurrent } from "../../constants/date";
 
+const options: PrintTextOptions = {
+    encoding: "Cp857",
+    codepage: 13,
+    fonttype: 0,
+    widthtimes: 3,
+    heigthtimes: 3,
+}
+
 const Collect: React.FC<IndexProps> = ({
     dataSupplier,
     setLastCollect
 }) => {
     const navigation = useNavigation<NativeStackNavigationProp<StackProps>>()
 
+    const [loadingConfirm, setLoadingConfirm] = useState<boolean>(false)
     const [showModal, setShowModal] = useState<boolean>(false)
     const [items, setItems] = useState<ItemType[]>([])
     const [isInsert, setIsInsert] = useState<boolean>(false)
 
     useEffect(() => {
-        // connect()
+        connect()
         listData()
     }, [])
 
@@ -96,11 +105,14 @@ const Collect: React.FC<IndexProps> = ({
     }
 
     const confirm = async () => {
+        if (loadingConfirm) return
+
         if (!isInsert) {
             Alert.alert('Aviso', 'Insira algum item primeiro!')
             return
         }
 
+        setLoadingConfirm(true)
         setLastCollect(dataSupplier.CODORDEMCOLETA)
 
         DBCollections.update({
@@ -120,124 +132,32 @@ const Collect: React.FC<IndexProps> = ({
             }
         }
 
-        await BluetoothEscposPrinter.printText('--------------------------------', {
-            encoding: "Cp857",
-            codepage: 13,
-            fonttype: 0,
-            widthtimes: 3,
-            heigthtimes: 3,
-        });
-        await BluetoothEscposPrinter.printText(`${dataSupplier.FILIAL.padStart(21, ' ')}`, {
-            encoding: "Cp857",
-            codepage: 13,
-            fonttype: 0,
-            widthtimes: 3,
-            heigthtimes: 3,
-        });
-        await BluetoothEscposPrinter.printText('--------------------------------', {
-            encoding: "Cp857",
-            codepage: 13,
-            fonttype: 0,
-            widthtimes: 3,
-            heigthtimes: 3,
-        });
-        await BluetoothEscposPrinter.printText(`${dataSupplier.FORNECEDOR.padStart(21, ' ')}`, {
-            encoding: "Cp857",
-            codepage: 13,
-            fonttype: 0,
-            widthtimes: 3,
-            heigthtimes: 3,
-        });
-        await BluetoothEscposPrinter.printText(`${(dataSupplier.TELEFONE).padStart(23, ' ')}`, {
-            encoding: "Cp857",
-            codepage: 13,
-            fonttype: 1,
-            widthtimes: 3,
-            heigthtimes: 3,
-        });
-        await BluetoothEscposPrinter.printText('--------------------------------', {
-            encoding: "Cp857",
-            codepage: 13,
-            fonttype: 0,
-            widthtimes: 3,
-            heigthtimes: 3,
-        });
-        await BluetoothEscposPrinter.printText(`Codigo: ${dataSupplier.CODORDEMCOLETA}`, {
-            encoding: "Cp857",
-            codepage: 13,
-            fonttype: 1,
-            widthtimes: 3,
-            heigthtimes: 3,
-        });
-        let date = new Date();
-        let currentDate = `${date.getDate()}/${String(date.getMonth()+1).padStart(2, '0')}/${date.getFullYear()}`
-        let currentTime = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`
+        await BluetoothEscposPrinter.printText('--------------------------------', options);
+        await BluetoothEscposPrinter.printText(`${dataSupplier.FILIAL.padStart(21, ' ')}`, options);
+        await BluetoothEscposPrinter.printText('--------------------------------', options);
+        await BluetoothEscposPrinter.printText(`${dataSupplier.FORNECEDOR.padStart(21, ' ')}`, options);
+        await BluetoothEscposPrinter.printText(`${(dataSupplier?.TELEFONE).padStart(23, ' ')}`, { ...options, fonttype: 1, });
+        await BluetoothEscposPrinter.printText('--------------------------------', options);
+        await BluetoothEscposPrinter.printText(`Codigo: ${dataSupplier.CODORDEMCOLETA}`, { ...options, fonttype: 1, });
 
-        await BluetoothEscposPrinter.printText(`Data: ${currentDate} ${currentTime}`, {
-            encoding: "Cp857",
-            codepage: 13,
-            fonttype: 1,
-            widthtimes: 3,
-            heigthtimes: 3,
-        });
-        await BluetoothEscposPrinter.printText(`${dataSupplier.BAIRRO} - ${dataSupplier.CIDADE_ESTADO}`, {
-            encoding: "Cp857",
-            codepage: 13,
-            fonttype: 1,
-            widthtimes: 3,
-            heigthtimes: 3,
-        });
-        await BluetoothEscposPrinter.printText('================================', {
-            encoding: "Cp857",
-            codepage: 13,
-            fonttype: 0,
-            widthtimes: 3,
-            heigthtimes: 3,
-        });
-        await BluetoothEscposPrinter.printText('Produto               Quantidade', {
-            encoding: "Cp857",
-            codepage: 13,
-            fonttype: 1,
-            widthtimes: 3,
-            heigthtimes: 3,
-        });
-        await BluetoothEscposPrinter.printText('================================', {
-            encoding: "Cp857",
-            codepage: 13,
-            fonttype: 0,
-            widthtimes: 3,
-            heigthtimes: 3,
-        });
+        await BluetoothEscposPrinter.printText(`Data: ${getDateCurrent()} ${getTimeCurrent()}`, { ...options, fonttype: 1, });
+        await BluetoothEscposPrinter.printText(`${dataSupplier.BAIRRO} - ${dataSupplier.CIDADE_ESTADO}`, { ...options, fonttype: 1, });
+        await BluetoothEscposPrinter.printText('================================', options);
+        await BluetoothEscposPrinter.printText('Produto               Quantidade', { ...options, fonttype: 1, });
+        await BluetoothEscposPrinter.printText('================================', options);
 
         for (let i = 0; i < items.length; i++) {
             if (Number(items[i].value) > 0) {
-                await BluetoothEscposPrinter.printText(`${items[i].description.padEnd(31 - items[i].value.length, ' ')} ${items[i].value}`, {
-                    encoding: "Cp857",
-                    codepage: 13,
-                    fonttype: 1,
-                    widthtimes: 3,
-                    heigthtimes: 3,
-                });
+                await BluetoothEscposPrinter.printText(`${items[i].description.padEnd(31 - items[i].value.length, ' ')} ${items[i].value}`, { ...options, fonttype: 1, });
             }
         }
 
-        await BluetoothEscposPrinter.printText('================================', {
-            encoding: "Cp857",
-            codepage: 13,
-            fonttype: 0,
-            widthtimes: 3,
-            heigthtimes: 3,
-        });
+        await BluetoothEscposPrinter.printText('================================', options);
         let total = currency(items.reduce((valor, total) => Number(valor) + Number(total.value), 0), 2, 3, '.', ',');
-        await BluetoothEscposPrinter.printText(total.padStart(32, ' '), {
-            encoding: "Cp857",
-            codepage: 13,
-            fonttype: 1,
-            widthtimes: 3,
-            heigthtimes: 3,
-        });
+        await BluetoothEscposPrinter.printText(total.padStart(32, ' '), { ...options, fonttype: 1, });
         await BluetoothEscposPrinter.printText('\r\n\r\n\r\n', {});
 
+        setLoadingConfirm(false)
         setShowModal(false)
         navigation.navigate('Success')
     }
@@ -278,6 +198,7 @@ const Collect: React.FC<IndexProps> = ({
                 setShowModal={setShowModal}
                 type={dataSupplier.TIPO}
                 confirm={confirm}
+                loadingConfirm={loadingConfirm}
             />
         </Main>
     )

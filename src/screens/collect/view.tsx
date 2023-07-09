@@ -21,7 +21,8 @@ const View: React.FC<ViewProps> = ({
     showModal,
     setShowModal,
     type,
-    confirm
+    confirm,
+    loadingConfirm
 }) => {
     return (
         <Container>
@@ -119,7 +120,8 @@ const View: React.FC<ViewProps> = ({
                     buttonConfirm={{
                         text: 'Finalizar',
                         type: 'success',
-                        onPress: confirm
+                        onPress: confirm,
+                        isLoading: loadingConfirm
                     }}
                     setState={() => setShowModal(false)}
             />

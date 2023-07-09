@@ -17,4 +17,5 @@ export interface ViewProps {
     setShowModal: (state: boolean) => void;
     type: string;
     confirm: () => void;
+    loadingConfirm: boolean;
 }
