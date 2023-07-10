@@ -120,7 +120,7 @@ const verifyKM = ({ codMotorista }: KMType) => {
 }
 
 const insertKM = ({ codMotorista, kmInicial, dtHoraStatus }: KMType) => {
-    return new Promise<KMProps['status']>(async (resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         await api.post('coletas/inserir-km-inicial.php', { codMotorista, kmInicial, dtHoraStatus })
         .then((response) => {
             let res:KMProps['status'] = response.data.status
