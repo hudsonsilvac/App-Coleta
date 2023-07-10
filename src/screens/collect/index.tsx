@@ -136,8 +136,8 @@ const Collect: React.FC<IndexProps> = ({
         await BluetoothEscposPrinter.printText(`${dataSupplier.FILIAL.padStart(21, ' ')}`, options);
         await BluetoothEscposPrinter.printText('--------------------------------', options);
         await BluetoothEscposPrinter.printText(`${dataSupplier.FORNECEDOR.padStart(21, ' ')}`, options);
-        await BluetoothEscposPrinter.printText(`${(dataSupplier?.TELEFONE).padStart(23, ' ')}`, { ...options, fonttype: 1, });
-        await BluetoothEscposPrinter.printText('--------------------------------', options);
+        // await BluetoothEscposPrinter.printText(`${(dataSupplier?.TELEFONE).padStart(23, ' ')}`, { ...options, fonttype: 1, });
+        // await BluetoothEscposPrinter.printText('--------------------------------', options);
         await BluetoothEscposPrinter.printText(`Codigo: ${dataSupplier.CODORDEMCOLETA}`, { ...options, fonttype: 1, });
 
         await BluetoothEscposPrinter.printText(`Data: ${getDateCurrent()} ${getTimeCurrent()}`, { ...options, fonttype: 1, });
