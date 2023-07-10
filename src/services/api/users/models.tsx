@@ -19,4 +19,5 @@ export interface StoresProps {
 export interface UsersProps {
     MATRICULA: string;
     NOME: string;
+    NUMCAR: string;
 }

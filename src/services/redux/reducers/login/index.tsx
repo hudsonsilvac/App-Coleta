@@ -4,7 +4,8 @@ const initialState: IndexProps = {
     data: {
         id: '',
         name: '',
-        dateLogin: ''
+        dateLogin: '',
+        numCar: ''
     }
 };
 

@@ -46,6 +46,7 @@ const listUsers = ({ codFilial }: UsersType) => {
                 let json: UsersProps = {
                     MATRICULA: res[i].MATRICULA,
                     NOME: res[i].NOME,
+                    NUMCAR: res[i].NUMCAR
                 }
                 array.push(json)
             }

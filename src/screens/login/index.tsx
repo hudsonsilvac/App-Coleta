@@ -37,7 +37,7 @@ const Login: React.FC<IndexProps> = ({
 
     const [showUsers, setShowUsers] = useState<boolean>(false)
     const [user, setUser] = useState<UsersProps[]>([])
-    const [userSelected, setUserSelected] = useState<UsersProps>({ MATRICULA: '', NOME: '' })
+    const [userSelected, setUserSelected] = useState<UsersProps>({ MATRICULA: '', NOME: '', NUMCAR: '' })
 
     const [showKM, setShowKM] = useState<boolean>(false)
     const [initialKM, setInitialKM] = useState<string>('')
@@ -205,7 +205,8 @@ const Login: React.FC<IndexProps> = ({
         setLoginData({
             id: userSelected.MATRICULA,
             name: userSelected.NOME,
-            dateLogin: getDateCurrent()
+            dateLogin: getDateCurrent(),
+            numCar: userSelected.NUMCAR
         })
         navigation.navigate('Home')
     }
