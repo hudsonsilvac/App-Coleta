@@ -87,10 +87,15 @@ const Login: React.FC<IndexProps> = ({
     }
 
     const insertKM = () => {
+        if (!initialKM) {
+            Alert.alert('Alerta', 'Insira o KM inicial')
+            return
+        }
+
         collections.insertKM({
             codMotorista: userSelected.MATRICULA,
             kmInicial: initialKM,
-            dtHoraStatus: getTimeCurrent()
+            dtHoraStatus: `${getDateCurrent()} ${getTimeCurrent()}`
         })
         .then(() => {
             setIsLoading(true)
@@ -191,6 +196,7 @@ const Login: React.FC<IndexProps> = ({
                 navigate()
             }, 10000);
         })
+        .catch(value => Alert.alert('Falha ao entrar', value))
     }
 
     const navigate = () => {
