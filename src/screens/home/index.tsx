@@ -92,33 +92,40 @@ const Home: React.FC<IndexProps> = ({
         setIsSincronize(true)
 
         DBCollections.listSuccess()
-        .then((data: CollectionProps[]) => {
+        .then(async (data: CollectionProps[]) => {
             data.map(item => {
-                DBProducts.listAll({ CODFORNEC: item.CODFORNEC })
-                .then((dataP: ProductsProps[]) => {
-                    let codOrdemColeta = item.CODORDEMCOLETA
-                    let DTULAlteracao = item.DTULTALTERACAO
-                    let dtHoraColeta = item.DTCOLETA
-                    let data = item.DTCOLETA
-                    let dtHoraStatus = item.DTCOLETA
-                    let numCar = '0'
+                let codOrdemColeta: string, DTULAlteracao: string, dtHoraColeta: string, data: string, dtHoraStatus: string, numCar: string
+                let qtTotalColetada: string, qtItensColetados: string, qtItensPrevistos: string, qtPrevista: string, pesoColeta: string
+                let vlTotal: string, vlColeta: string, newItems
+                
+                Promise.all([
+                    DBProducts.listAll({ CODFORNEC: item.CODFORNEC })
+                    .then((dataP: ProductsProps[]) => {
+                        codOrdemColeta = item.CODORDEMCOLETA
+                        DTULAlteracao = item.DTULTALTERACAO
+                        dtHoraColeta = item.DTCOLETA
+                        data = item.DTCOLETA
+                        dtHoraStatus = item.DTCOLETA
+                        numCar = dataUser.numCar
 
-                    let qtTotalColetada = String(dataP.reduce((accumulattor, total) => Number(accumulattor) + Number(total.COLETA), 0))
-                    let qtItensColetados = String(dataP.reduce((accumulattor, total) => Number(total) > 0 ? Number(accumulattor) + 1 : 1, 0))
-                    let qtItensPrevistos = String(dataP.length)
-                    let qtPrevista = String(dataP.reduce((valor, total) => Number(valor) + Number(total.QTPREVISAO), 0))
-                    let pesoColeta = String(dataP.reduce((accumulattor, total) => Number(accumulattor) + Number(total.COLETA), 0))
+                        qtTotalColetada = String(dataP.reduce((accumulattor, total) => Number(accumulattor) + Number(total.COLETA), 0))
+                        qtItensColetados = String(dataP.reduce((accumulattor, total) => Number(total) > 0 ? Number(accumulattor) + 1 : 1, 0))
+                        qtItensPrevistos = String(dataP.length)
+                        qtPrevista = String(dataP.reduce((valor, total) => Number(valor) + Number(total.QTPREVISAO), 0))
+                        pesoColeta = String(dataP.reduce((accumulattor, total) => Number(accumulattor) + Number(total.COLETA), 0))
 
-                    let vlTotal = String(dataP.reduce((accumulattor, total) => Number(accumulattor) + (Number(total.PCOMPRA || 0) * Number(total.COLETA || 0)), 0))
-                    let vlColeta = String(dataP.reduce((accumulattor, total) => Number(accumulattor) + (Number(total.PCOMPRA || 0) * Number(total.COLETA || 0)), 0))
+                        vlTotal = String(dataP.reduce((accumulattor, total) => Number(accumulattor) + (Number(total.PCOMPRA || 0) * Number(total.COLETA || 0)), 0))
+                        vlColeta = String(dataP.reduce((accumulattor, total) => Number(accumulattor) + (Number(total.PCOMPRA || 0) * Number(total.COLETA || 0)), 0))
 
-                    let newItems = dataP.map(item => ({
-                        codProd: String(item.CODPROD),
-                        quantidade: item.COLETA,
-                        pCompra: item.PCOMPRA,
-                        qtPrevista: item.QTPREVISAO,
-                    }))
-            
+                        newItems = dataP.map(item => ({
+                            codProd: String(item.CODPROD),
+                            quantidade: item.COLETA,
+                            pCompra: item.PCOMPRA,
+                            qtPrevista: item.QTPREVISAO,
+                        }))
+                
+                    })
+                ]).then(() => {
                     collections.addItem({
                         itens: newItems,
                         codOrdemColeta,
