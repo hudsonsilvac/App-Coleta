@@ -34,8 +34,8 @@ const listSuccess = () => {
                 'SELECT * FROM Collections WHERE TIPO = ?',
                 ['1'],
                 (tx: Transaction, result: ResultSet) => {
+                    var array: CollectionProps[] = []
                     if (result.rows.length > 0) {
-                        var array: CollectionProps[] = []
                         for (let i = 0; i < result.rows.length; i++) {
                             let json = {
                                 CODFILIAL: result.rows.item(i).CODFILIAL,
@@ -56,8 +56,8 @@ const listSuccess = () => {
                             }
                             array.push(json)
                         }
-                        resolve(array)
-                    } else reject('ERROR')
+                    }
+                    resolve(array)
                 }
             )
         })
@@ -71,8 +71,8 @@ const listToCollect = () => {
                 'SELECT * FROM Collections WHERE TIPO = ?',
                 ['2'],
                 (tx: Transaction, result: ResultSet) => {
+                    var array: CollectionProps[] = []
                     if (result.rows.length > 0) {
-                        var array: CollectionProps[] = []
                         for (let i = 0; i < result.rows.length; i++) {
                             let json = {
                                 CODFILIAL: result.rows.item(i).CODFILIAL,
@@ -93,8 +93,8 @@ const listToCollect = () => {
                             }
                             array.push(json)
                         }
-                        resolve(array)
-                    } else reject('ERROR')
+                    }
+                    resolve(array)
                 }
             )
         })
@@ -108,8 +108,8 @@ const listToDo = () => {
                 'SELECT * FROM Collections WHERE TIPO = ?',
                 ['3'],
                 (tx: Transaction, result: ResultSet) => {
+                    var array: CollectionProps[] = []
                     if (result.rows.length > 0) {
-                        var array: CollectionProps[] = []
                         for (let i = 0; i < result.rows.length; i++) {
                             let json = {
                                 CODFILIAL: result.rows.item(i).CODFILIAL,
@@ -130,8 +130,8 @@ const listToDo = () => {
                             }
                             array.push(json)
                         }
-                        resolve(array)
-                    } else reject('ERROR')
+                    }
+                    resolve(array)
                 }
             )
         })
