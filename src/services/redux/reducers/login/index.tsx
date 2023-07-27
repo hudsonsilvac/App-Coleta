@@ -5,7 +5,8 @@ const initialState: IndexProps = {
         id: '',
         name: '',
         dateLogin: '',
-        numCar: ''
+        numCar: '',
+        idStore: ''
     }
 };
 

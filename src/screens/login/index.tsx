@@ -13,15 +13,13 @@ import { getDateCurrent, getTimeCurrent } from "../../constants/date";
 
 import users from "../../services/api/users";
 import collections from "../../services/api/collections";
-import products from "../../services/api/products";
 import { StoresProps, UsersProps } from "../../services/api/users/models";
-import { CollectionProps } from "../../services/api/collections/models";
-import { ProductsProps } from "../../services/api/products/models";
 import DBProducts from '../../services/sqlite/products'
 import DBCollections from '../../services/sqlite/collections'
 
 import { IndexProps } from "./models";
 import View from "./view";
+import { sincronizeDB } from "../../constants/sincronize";
 
 const Login: React.FC<IndexProps> = ({
     userData,
@@ -100,97 +98,7 @@ const Login: React.FC<IndexProps> = ({
         .then(() => {
             setIsLoading(true)
 
-            collections.listSuccess({ codMotorista: userSelected.MATRICULA })
-            .then((data: CollectionProps[]) => {
-                if (data.length <= 0)
-                    return
-                
-                data.map(item => {
-                    DBCollections.insert({
-                        CODFILIAL: item.CODFILIAL,
-                        FILIAL: item.FILIAL,
-                        CODFORNEC: item.CODFORNEC,
-                        CODORDEMCOLETA: item.CODORDEMCOLETA,
-                        DTCOLETA: item.DTCOLETA,
-                        DTULTALTERACAO: item.DTULTALTERACAO,
-                        FORNECEDOR: item.FORNECEDOR,
-                        POSICAO: item.POSICAO,
-                        BAIRRO: item.BAIRRO,
-                        CIDADE_ESTADO: item.CIDADE_ESTADO,
-                        ENDERECO: item.ENDERECO,
-                        TELEFONE: item.TELEFONE,
-                        QTTOTALCOLETADA: item.QTTOTALCOLETADA,
-                        TIPO: '1',
-                        VLTOTAL: item.VLTOTAL
-                    })
-                })
-            })
-
-            collections.listToCollect({ codMotorista: userSelected.MATRICULA })
-            .then((data: CollectionProps[]) => {
-                if (data.length <= 0)
-                    return
-
-                data.map(item => {
-                    DBCollections.insert({
-                        CODFILIAL: item.CODFILIAL,
-                        FILIAL: item.FILIAL,
-                        CODFORNEC: item.CODFORNEC,
-                        CODORDEMCOLETA: item.CODORDEMCOLETA,
-                        DTCOLETA: item.DTCOLETA,
-                        DTULTALTERACAO: item.DTULTALTERACAO,
-                        FORNECEDOR: item.FORNECEDOR,
-                        POSICAO: item.POSICAO,
-                        BAIRRO: item.BAIRRO,
-                        CIDADE_ESTADO: item.CIDADE_ESTADO,
-                        ENDERECO: item.ENDERECO,
-                        TELEFONE: item.TELEFONE,
-                        QTTOTALCOLETADA: item.QTTOTALCOLETADA,
-                        TIPO: '2',
-                        VLTOTAL: item.VLTOTAL
-                    })
-                })
-            })
-            
-            collections.listToDo({ codMotorista: userSelected.MATRICULA })
-            .then((data: CollectionProps[]) => {
-                if (data.length <= 0)
-                    return
-                
-                data.map(item => {
-                    DBCollections.insert({
-                        CODFILIAL: item.CODFILIAL,
-                        FILIAL: item.FILIAL,
-                        CODFORNEC: item.CODFORNEC,
-                        CODORDEMCOLETA: item.CODORDEMCOLETA,
-                        DTCOLETA: item.DTCOLETA,
-                        DTULTALTERACAO: item.DTULTALTERACAO,
-                        FORNECEDOR: item.FORNECEDOR,
-                        POSICAO: item.POSICAO,
-                        BAIRRO: item.BAIRRO,
-                        CIDADE_ESTADO: item.CIDADE_ESTADO,
-                        ENDERECO: item.ENDERECO,
-                        TELEFONE: item.TELEFONE,
-                        QTTOTALCOLETADA: item.QTTOTALCOLETADA,
-                        TIPO: '3',
-                        VLTOTAL: item.VLTOTAL
-                    })
-                })
-            })
-
-            products.listAll({ codMotorista: userSelected.MATRICULA, codFilial: storeSelected.CODIGO })
-            .then((data: ProductsProps[]) => {
-                data.map(item => {
-                    DBProducts.insert({
-                        CODPROD: item.CODPROD,
-                        CODFORNEC: item.CODFORNEC,
-                        DESCRICAO: item.DESCRICAO,
-                        QTPREVISAO: item.QTPREVISAO,
-                        PCOMPRA: item.PCOMPRA,
-                        COLETA: item.COLETA
-                    })
-                })
-            })
+            sincronizeDB(userSelected.MATRICULA, storeSelected.CODIGO)
 
             setTimeout(() => {
                 navigate()
@@ -206,7 +114,8 @@ const Login: React.FC<IndexProps> = ({
             id: userSelected.MATRICULA,
             name: userSelected.NOME,
             dateLogin: getDateCurrent(),
-            numCar: userSelected.NUMCAR
+            numCar: userSelected.NUMCAR,
+            idStore: storeSelected.CODIGO
         })
         navigation.navigate('Home')
     }

@@ -20,9 +20,14 @@ const View: React.FC<ViewProps> = ({
     total,
     showModal,
     setShowModal,
-    type,
     confirm,
-    loadingConfirm
+    loadingConfirm,
+    showModalUnrealized,
+    setShowModalUnrealized,
+    confirmUnrealized,
+    loadingConfirmUnrealized,
+    type,
+    print,
 }) => {
     return (
         <Container>
@@ -105,13 +110,15 @@ const View: React.FC<ViewProps> = ({
                     text={`Total: ${total}`}
                 />
             </BoxCommon>
-            {
-                type != '1' && (
-                    <BoxCommon width='100%' alignItems='center' mt='50px' mb='50px'>
-                        <Button type='success' text='Finalizar' larger onPress={() => setShowModal(true)} />
-                    </BoxCommon>
-                )
-            }
+            <BoxCommon width='100%' alignItems='center' mt='50px' mb='50px'>
+                {
+                    type != '1' ? (
+                        <Button type='success' text='Finalizar' larger onPress={() => setShowModal(true)} mb='10px' />
+                    ) : (
+                        <Button type='success' text='Imprimir' larger onPress={() => print()} mb='10px' />
+                    )
+                }
+            </BoxCommon>
             <BottomSheet
                     title='Confirmação'
                     description='Tem certeza que você deseja finalizar esta coleta?'
@@ -124,6 +131,19 @@ const View: React.FC<ViewProps> = ({
                         isLoading: loadingConfirm
                     }}
                     setState={() => setShowModal(false)}
+            />
+            <BottomSheet
+                title='Confirmação'
+                description='Deseja marcar esta coleta como Não Realizada?'
+                type='question'
+                visible={showModalUnrealized}
+                buttonConfirm={{
+                    text: 'Ok',
+                    type: 'primary',
+                    onPress: confirmUnrealized,
+                    isLoading: loadingConfirmUnrealized
+                }}
+                setState={() => setShowModalUnrealized(false)}
             />
         </Container>
     )

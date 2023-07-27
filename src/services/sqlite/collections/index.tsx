@@ -182,6 +182,24 @@ const update = ({ TIPO, DTCOLETA, DTULTALTERACAO, CODFORNEC }: IndexType) => {
     })
 }
 
+const updateToTodo = ({ CODFORNEC }: IndexType) => {
+    return new Promise<boolean>((resolve, reject) => {
+        db.transaction((tx: Transaction) => {
+            tx.executeSql(
+                `UPDATE
+                    Collections
+                SET
+                    TIPO = ?
+                WHERE
+                    CODFORNEC = ?
+                `,
+                ['3', CODFORNEC],
+                (tx: Transaction, result: ResultSet) => resolve(!!result.rows.length)
+            )
+        })
+    })
+}
+
 const deleteAll = () => {
     return new Promise<boolean>((resolve, reject) => {
         db.transaction((tx: Transaction) => {
@@ -200,5 +218,6 @@ export default {
     listToDo,
     insert,
     update,
+    updateToTodo,
     deleteAll,
 }

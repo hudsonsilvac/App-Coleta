@@ -13,9 +13,18 @@ export interface ViewProps {
     items: ItemType[];
     setItem: (value: string, id: string) => void;
     total: string;
+
     showModal: boolean;
     setShowModal: (state: boolean) => void;
-    type: string;
     confirm: () => void;
     loadingConfirm: boolean;
+
+    showModalUnrealized: boolean;
+    setShowModalUnrealized: (state: boolean) => void;
+    confirmUnrealized: () => void;
+    loadingConfirmUnrealized: boolean;
+
+    type: string;
+
+    print: () => void;
 }

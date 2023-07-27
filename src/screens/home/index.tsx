@@ -26,6 +26,7 @@ import { IndexProps } from "./models";
 import View from "./view";
 import collections from "../../services/api/collections";
 import { Alert } from "react-native";
+import { sincronizeDB } from "../../constants/sincronize";
 
 const List: ListDataType[] = [
     {
@@ -152,6 +153,17 @@ const Home: React.FC<IndexProps> = ({
         }, 10000);
     }
 
+    const [isReceive, setIsReceive] = useState<boolean>(false)
+
+    const toReceive = () => {
+        setIsReceive(true)
+        sincronizeDB(dataUser.id, dataUser.idStore)
+        setTimeout(() => {
+            setIsReceive(false)
+            Alert.alert('Sucesso', 'Dados recebidos com sucesso!')
+        }, 10000);
+    }
+
     useEffect(() => {
         loadData()
     }, [lastCollect])
@@ -171,6 +183,8 @@ const Home: React.FC<IndexProps> = ({
         <Main pd statusBar={{ barStyle: 'dark-content' }}>
             <View
                 showSincronize={showSincronize}
+                toReceive={toReceive}
+                isReceive={isReceive}
                 sincronize={sincronize}
                 isSincronize={isSincronize}
                 user={dataUser.name.split(' ')[0]}

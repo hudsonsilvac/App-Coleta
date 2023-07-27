@@ -11,6 +11,8 @@ export interface IndexProps {
 
 export interface ViewProps {
     showSincronize: boolean;
+    toReceive: () => void;
+    isReceive: boolean;
     sincronize: () => void;
     isSincronize: boolean;
     user: string;

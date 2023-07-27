@@ -9,4 +9,5 @@ type Data = {
     name: string;
     dateLogin: string;
     numCar: string;
+    idStore: string;
 }

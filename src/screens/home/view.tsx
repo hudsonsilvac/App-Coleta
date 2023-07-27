@@ -15,6 +15,8 @@ import Button from "../../atomic/molecules/button";
 
 const View: React.FC<ViewProps> = ({
     showSincronize,
+    isReceive,
+    toReceive,
     sincronize,
     isSincronize,
     user,
@@ -31,19 +33,19 @@ const View: React.FC<ViewProps> = ({
     <Container>
         <Text type='H2' color={primary} text={`Olá, ${user}!`} />
         <Text type='H3' text='Pronto para coletar?' mt='5px' mb='20px' />
-        {
-            showSincronize && (
-                <BoxCommon alignItems='center' width='100%'>
-                    <Button
-                        text='Sincronizar dados'
-                        onPress={sincronize}
-                        isLoading={isSincronize}
-                        larger
-                        mb='20px'
-                    />
-                </BoxCommon>
-            )
-        }
+        <BoxCommon alignItems='center' width='100%'>
+            {
+                showSincronize && (
+                        <Button
+                            text='Enviar dados'
+                            onPress={sincronize}
+                            isLoading={isSincronize}
+                            larger
+                            mb='20px'
+                        />
+                    )
+            }
+        </BoxCommon>
         <List data={list} selected={listItemSelected} setSelected={setListItemSelected} />
         {
             (listItemSelected === 0 || listItemSelected === 1)
@@ -99,6 +101,16 @@ const View: React.FC<ViewProps> = ({
                 </>
             )
         }
+        <BoxCommon alignItems='center' width='100%'>
+            <Button
+                text='Receber dados'
+                type='success'
+                onPress={toReceive}
+                isLoading={isReceive}
+                larger
+                mt='15px'
+            />
+        </BoxCommon>
         <BoxCommon height='50px' />
     </Container>
 )

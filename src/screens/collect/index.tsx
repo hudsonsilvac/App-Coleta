@@ -47,6 +47,10 @@ const Collect: React.FC<IndexProps> = ({
 
     const [loadingConfirm, setLoadingConfirm] = useState<boolean>(false)
     const [showModal, setShowModal] = useState<boolean>(false)
+
+    const [showModalUnrealized, setShowModalUnrealized] = useState<boolean>(false)
+    const [loadingConfirmUnrealized, setLoadingConfirmUnrealized] = useState<boolean>(false)
+
     const [items, setItems] = useState<ItemType[]>([])
     const [isInsert, setIsInsert] = useState<boolean>(false)
 
@@ -136,8 +140,6 @@ const Collect: React.FC<IndexProps> = ({
         await BluetoothEscposPrinter.printText(`${dataSupplier.FILIAL.padStart(21, ' ')}`, options);
         await BluetoothEscposPrinter.printText('--------------------------------', options);
         await BluetoothEscposPrinter.printText(`${dataSupplier.FORNECEDOR.padStart(21, ' ')}`, options);
-        // await BluetoothEscposPrinter.printText(`${(dataSupplier?.TELEFONE).padStart(23, ' ')}`, { ...options, fonttype: 1, });
-        // await BluetoothEscposPrinter.printText('--------------------------------', options);
         await BluetoothEscposPrinter.printText(`Codigo: ${dataSupplier.CODORDEMCOLETA}`, { ...options, fonttype: 1, });
 
         await BluetoothEscposPrinter.printText(`Data: ${getDateCurrent()} ${getTimeCurrent()}`, { ...options, fonttype: 1, });
@@ -162,11 +164,48 @@ const Collect: React.FC<IndexProps> = ({
         navigation.navigate('Success')
     }
 
+    const confirmUnrealized = async () => {
+        setLastCollect(dataSupplier.CODORDEMCOLETA)
+        DBCollections.updateToTodo({
+            CODFORNEC: dataSupplier.CODFORNEC
+        }).then(() => navigation.navigate('Home'))
+    }
+
+    const print = async () => {
+        await BluetoothEscposPrinter.printText('--------------------------------', options);
+        await BluetoothEscposPrinter.printText(`${dataSupplier.FILIAL.padStart(21, ' ')}`, options);
+        await BluetoothEscposPrinter.printText('--------------------------------', options);
+        await BluetoothEscposPrinter.printText(`${dataSupplier.FORNECEDOR.padStart(21, ' ')}`, options);
+        await BluetoothEscposPrinter.printText(`Codigo: ${dataSupplier.CODORDEMCOLETA}`, { ...options, fonttype: 1, });
+
+        await BluetoothEscposPrinter.printText(`Data: ${dataSupplier.DTCOLETA}`, { ...options, fonttype: 1, });
+        await BluetoothEscposPrinter.printText(`${dataSupplier.BAIRRO} - ${dataSupplier.CIDADE_ESTADO}`, { ...options, fonttype: 1, });
+        await BluetoothEscposPrinter.printText('================================', options);
+        await BluetoothEscposPrinter.printText('Produto               Quantidade', { ...options, fonttype: 1, });
+        await BluetoothEscposPrinter.printText('================================', options);
+
+        for (let i = 0; i < items.length; i++) {
+            if (Number(items[i].value) > 0) {
+                await BluetoothEscposPrinter.printText(`${items[i].description.padEnd(31 - items[i].value.length, ' ')} ${items[i].value}`, { ...options, fonttype: 1, });
+            }
+        }
+
+        await BluetoothEscposPrinter.printText('================================', options);
+        let total = currency(items.reduce((valor, total) => Number(valor) + Number(total.value), 0), 2, 3, '.', ',');
+        await BluetoothEscposPrinter.printText(total.padStart(32, ' '), { ...options, fonttype: 1, });
+        await BluetoothEscposPrinter.printText('\r\n\r\n\r\n', {});
+    }
+
     return (
         <Main>
             <Background source={Bg} small justifyContent='space-between'>
-                <BoxCommon width='100%' mt='60px' mb='30px'>
+                <BoxCommon width='100%' flexDirection='row' justifyContent='space-between' mt='60px' mb='30px'>
                     <Button type='back' onPress={() => navigation.goBack()} />
+                    {
+                        dataSupplier.TIPO != '1' && (
+                            <Button text='Não realizado' mt='-20px' mr='20px' onPress={() => setShowModalUnrealized(true)} />
+                        )
+                    }
                 </BoxCommon>
                 <BoxCommon alignItems='center'>
                     <Text
@@ -196,9 +235,14 @@ const Collect: React.FC<IndexProps> = ({
                 total={currency(items.reduce((valor, total) => Number(valor) + Number(total.value), 0), 2, 3, '.', ',')}
                 showModal={showModal}
                 setShowModal={setShowModal}
-                type={dataSupplier.TIPO}
                 confirm={confirm}
                 loadingConfirm={loadingConfirm}
+                showModalUnrealized={showModalUnrealized}
+                setShowModalUnrealized={setShowModalUnrealized}
+                confirmUnrealized={confirmUnrealized}
+                loadingConfirmUnrealized={loadingConfirmUnrealized}
+                type={dataSupplier.TIPO}
+                print={print}
             />
         </Main>
     )
