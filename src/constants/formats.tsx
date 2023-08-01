@@ -8,8 +8,9 @@ export function currency(value: number, n: number, x: number, s: string, c: stri
 export function boxID(value: string): string {
     let format = value.split(' ')
     let char0 = format[0].substring(0, 1);
-    let char1 = format[1].substring(0, 1)
+    let char1 = format[1]?.substring(0, 1)
+    
     if (format[1] == 'DA' || format[1] == 'DE')
         char1 = format[2].substring(0, 1)
-    return `${char0}${char1}`
+    return `${char0}${char1 ?? ''}`
 }
