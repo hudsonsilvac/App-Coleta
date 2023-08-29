@@ -18,7 +18,6 @@ import { LoginTypes } from "../../services/redux/reducers/login/models";
 import DBCollections from '../../services/sqlite/collections'
 import DBProducts from '../../services/sqlite/products'
 import { ProductsProps } from "../../services/sqlite/products/models";
-import { CollectionProps } from "../../services/sqlite/collections/models";
 
 import NetInfo from "@react-native-community/netinfo";
 
@@ -27,6 +26,7 @@ import View from "./view";
 import collections from "../../services/api/collections";
 import { Alert } from "react-native";
 import { sincronizeDB } from "../../constants/sincronize";
+import { ItemsType } from "../../services/api/collections/models";
 
 const List: ListDataType[] = [
     {
@@ -57,6 +57,7 @@ const Home: React.FC<IndexProps> = ({
     dataUser,
     setSupplierData,
     lastCollect,
+    setLastCollect
 }) => {
     const navigation = useNavigation<NativeStackNavigationProp<StackProps>>()
 
@@ -86,18 +87,19 @@ const Home: React.FC<IndexProps> = ({
         return () => clearInterval(timerNet)
     }, [])
 
-    const sincronize = () => {
+    const sincronize = (receive: boolean) => {
         if (isSincronize)
             return
 
-        setIsSincronize(true)
+        if (!receive)
+            setIsSincronize(true)
 
         DBCollections.listSuccess()
-        .then(async (data: CollectionProps[]) => {
+        .then(async (data: SuppliersTypes['data'][]) => {
             data.map(item => {
                 let codOrdemColeta: string, DTULAlteracao: string, dtHoraColeta: string, data: string, dtHoraStatus: string, numCar: string
                 let qtTotalColetada: string, qtItensColetados: string, qtItensPrevistos: string, qtPrevista: string, pesoColeta: string
-                let vlTotal: string, vlColeta: string, newItems
+                let vlTotal: string, vlColeta: string, newItems: ItemsType[]
                 
                 Promise.all([
                     DBProducts.listAll({ CODFORNEC: item.CODFORNEC })
@@ -127,6 +129,7 @@ const Home: React.FC<IndexProps> = ({
                 
                     })
                 ]).then(() => {
+                    console.error('--')
                     collections.addItem({
                         itens: newItems,
                         codOrdemColeta,
@@ -147,21 +150,31 @@ const Home: React.FC<IndexProps> = ({
             })
         })
 
+        if (receive) {
+            DBCollections.deleteAll()
+            DBProducts.deleteAll()
+        }
+
         setTimeout(() => {
-            Alert.alert('Sincronização', 'Sincronização concluída com sucesso!')
-            setIsSincronize(false)
+            if (receive) {
+                sincronizeDB(dataUser.id, dataUser.idStore)
+                setTimeout(() => {
+                    setIsReceive(false)
+                    Alert.alert('Sucesso', 'Dados recebidos com sucesso!')
+                    setLastCollect('1')
+                }, 10000);
+            } else {
+                Alert.alert('Sincronização', 'Sincronização concluída com sucesso!')
+                setIsSincronize(false)
+            }
         }, 10000);
     }
 
     const [isReceive, setIsReceive] = useState<boolean>(false)
 
-    const toReceive = () => {
+    const toReceive = async () => {
         setIsReceive(true)
-        sincronizeDB(dataUser.id, dataUser.idStore)
-        setTimeout(() => {
-            setIsReceive(false)
-            Alert.alert('Sucesso', 'Dados recebidos com sucesso!')
-        }, 10000);
+        sincronize(true)
     }
 
     useEffect(() => {
@@ -170,13 +183,13 @@ const Home: React.FC<IndexProps> = ({
 
     const loadData = () => {
         DBCollections.listToCollect()
-        .then((data: CollectionProps[]) => setSupplierToCollect(data))
+        .then((data: SuppliersTypes['data'][]) => setSupplierToCollect(data))
         
         DBCollections.listToDo()
-        .then((data: CollectionProps[]) => setSupplierToDo(data))
+        .then((data: SuppliersTypes['data'][]) => setSupplierToDo(data))
 
         DBCollections.listSuccess()
-        .then((data: CollectionProps[]) => setSupplierSuccess(data))
+        .then((data: SuppliersTypes['data'][]) => setSupplierSuccess(data))
     }
 
     return (
@@ -185,7 +198,7 @@ const Home: React.FC<IndexProps> = ({
                 showSincronize={showSincronize}
                 toReceive={toReceive}
                 isReceive={isReceive}
-                sincronize={sincronize}
+                sincronize={() => sincronize}
                 isSincronize={isSincronize}
                 user={dataUser.name.split(' ')[0]}
                 search={search}
@@ -210,11 +223,12 @@ const mapStateToProps = ({
     collectionsReducer: CollectionsTypes,
 }) => ({
     dataUser: loginReducer.data,
-    lastCollect: collectionsReducer
+    lastCollect: collectionsReducer.lastCollect,
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
     setSupplierData: (data: SuppliersTypes['data']) => dispatch({ type: 'SET_SUPPLIER_DATA', payload: { data } }),
+    setLastCollect: (data: CollectionsTypes['lastCollect']) => dispatch({ type: 'SET_COLLECT_LAST', payload: { data } }),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

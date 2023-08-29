@@ -101,16 +101,20 @@ const View: React.FC<ViewProps> = ({
                 </>
             )
         }
-        <BoxCommon alignItems='center' width='100%'>
-            <Button
-                text='Receber dados'
-                type='success'
-                onPress={toReceive}
-                isLoading={isReceive}
-                larger
-                mt='15px'
-            />
-        </BoxCommon>
+        {
+            showSincronize && (
+                <BoxCommon alignItems='center' width='100%'>
+                    <Button
+                        text='Receber dados'
+                        type='success'
+                        onPress={toReceive}
+                        isLoading={isReceive}
+                        larger
+                        mt='15px'
+                    />
+                </BoxCommon>
+            )
+        }
         <BoxCommon height='50px' />
     </Container>
 )

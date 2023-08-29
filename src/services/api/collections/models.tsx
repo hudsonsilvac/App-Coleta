@@ -19,7 +19,7 @@ export type AddType = {
     numCar: string
 }
 
-type ItemsType = {
+export type ItemsType = {
     codProd: string;
     quantidade: string;
     pCompra: string;

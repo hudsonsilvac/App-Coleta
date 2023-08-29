@@ -165,10 +165,12 @@ const Collect: React.FC<IndexProps> = ({
     }
 
     const confirmUnrealized = async () => {
-        setLastCollect(dataSupplier.CODORDEMCOLETA)
         DBCollections.updateToTodo({
             CODFORNEC: dataSupplier.CODFORNEC
-        }).then(() => navigation.navigate('Home'))
+        }).then(() => {
+            setLastCollect(dataSupplier.CODORDEMCOLETA)
+            navigation.navigate('Home')
+        })
     }
 
     const print = async () => {

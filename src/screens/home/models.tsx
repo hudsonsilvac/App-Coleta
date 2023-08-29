@@ -7,6 +7,7 @@ export interface IndexProps {
     dataUser: LoginTypes['data']
     setSupplierData: (data: SuppliersTypes['data']) => void;
     lastCollect: CollectionsTypes['lastCollect']
+    setLastCollect: (lastCollect: CollectionsTypes['lastCollect']) => void;
 }
 
 export interface ViewProps {

@@ -1,6 +1,7 @@
 import { ResultSet, Transaction } from 'react-native-sqlite-storage';
 import db from '..';
-import { CollectionProps, IndexType } from './models';
+import { IndexType } from './models';
+import { SuppliersTypes } from '../../redux/reducers/suppliers/models';
 
 db.transaction((tx: Transaction) => {
     tx.executeSql(
@@ -28,13 +29,13 @@ db.transaction((tx: Transaction) => {
 })
 
 const listSuccess = () => {
-    return new Promise<CollectionProps[]>((resolve, reject) => {
+    return new Promise<SuppliersTypes['data'][]>((resolve, reject) => {
         db.transaction((tx: Transaction) => {
             tx.executeSql(
                 'SELECT * FROM Collections WHERE TIPO = ?',
                 ['1'],
                 (tx: Transaction, result: ResultSet) => {
-                    var array: CollectionProps[] = []
+                    var array: SuppliersTypes['data'][] = []
                     if (result.rows.length > 0) {
                         for (let i = 0; i < result.rows.length; i++) {
                             let json = {
@@ -65,13 +66,13 @@ const listSuccess = () => {
 }
 
 const listToCollect = () => {
-    return new Promise<CollectionProps[]>((resolve, reject) => {
+    return new Promise<SuppliersTypes['data'][]>((resolve, reject) => {
         db.transaction((tx: Transaction) => {
             tx.executeSql(
                 'SELECT * FROM Collections WHERE TIPO = ?',
                 ['2'],
                 (tx: Transaction, result: ResultSet) => {
-                    var array: CollectionProps[] = []
+                    var array: SuppliersTypes['data'][] = []
                     if (result.rows.length > 0) {
                         for (let i = 0; i < result.rows.length; i++) {
                             let json = {
@@ -102,13 +103,13 @@ const listToCollect = () => {
 }
 
 const listToDo = () => {
-    return new Promise<CollectionProps[]>((resolve, reject) => {
+    return new Promise<SuppliersTypes['data'][]>((resolve, reject) => {
         db.transaction((tx: Transaction) => {
             tx.executeSql(
                 'SELECT * FROM Collections WHERE TIPO = ?',
                 ['3'],
                 (tx: Transaction, result: ResultSet) => {
-                    var array: CollectionProps[] = []
+                    var array: SuppliersTypes['data'][] = []
                     if (result.rows.length > 0) {
                         for (let i = 0; i < result.rows.length; i++) {
                             let json = {
