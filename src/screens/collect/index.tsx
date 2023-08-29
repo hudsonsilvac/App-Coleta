@@ -32,11 +32,11 @@ import { IndexProps } from "./models";
 import { getDateCurrent, getTimeCurrent } from "../../constants/date";
 
 const options: PrintTextOptions = {
-    encoding: "Cp857",
-    codepage: 13,
-    fonttype: 0,
-    widthtimes: 3,
-    heigthtimes: 3,
+    encoding: "GBK",
+    codepage: 0,
+    fonttype: 1,
+    widthtimes: 0,
+    heigthtimes: 0,
 }
 
 const Collect: React.FC<IndexProps> = ({
