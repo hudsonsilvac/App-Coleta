@@ -39,7 +39,7 @@ const Item: React.FC<IndexProps> = ({
     }
 
     return (
-        <Main onPress={setValue}>
+        <Main>
             <BoxCommon flex={1} flexDirection='row' alignItems='center'>
                 <BoxIcon>
                     <Icon>

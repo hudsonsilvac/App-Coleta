@@ -10,4 +10,5 @@ type Data = {
     dateLogin: string;
     numCar: string;
     idStore: string;
+    hourSync: string
 }

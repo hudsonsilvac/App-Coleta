@@ -27,6 +27,7 @@ import collections from "../../services/api/collections";
 import { Alert } from "react-native";
 import { sincronizeDB } from "../../constants/sincronize";
 import { ItemsType } from "../../services/api/collections/models";
+import { getTimeCurrent } from "../../constants/date";
 
 const List: ListDataType[] = [
     {
@@ -57,7 +58,8 @@ const Home: React.FC<IndexProps> = ({
     dataUser,
     setSupplierData,
     lastCollect,
-    setLastCollect
+    setLastCollect,
+    setLoginData
 }) => {
     const navigation = useNavigation<NativeStackNavigationProp<StackProps>>()
 
@@ -82,10 +84,32 @@ const Home: React.FC<IndexProps> = ({
                 if (state.isConnected == false) setShowSincronize(false)
                 else setShowSincronize(true)
             });
+            syncAuto()
         }, delay * 1000);
 
         return () => clearInterval(timerNet)
-    }, [])
+    }, [dataUser])
+
+    const syncAuto = () => {
+        let time = Number(dataUser.hourSync.split(':')[0])
+        let currentTime = Number(getTimeCurrent().split(':')[0])
+
+        if (currentTime > time || currentTime <= 5) {
+            setLoginData({
+                id: dataUser.id,
+                name: dataUser.name,
+                dateLogin: dataUser.dateLogin,
+                numCar: dataUser.numCar,
+                idStore: dataUser.idStore,
+                hourSync: getTimeCurrent()
+            })
+
+            sincronize(false)
+            setTimeout(() => {
+                sincronize(true)
+            }, 3000);
+        }
+    }
 
     const sincronize = (receive: boolean) => {
         if (isSincronize)
@@ -129,7 +153,6 @@ const Home: React.FC<IndexProps> = ({
                 
                     })
                 ]).then(() => {
-                    console.error('--')
                     collections.addItem({
                         itens: newItems,
                         codOrdemColeta,
@@ -198,7 +221,7 @@ const Home: React.FC<IndexProps> = ({
                 showSincronize={showSincronize}
                 toReceive={toReceive}
                 isReceive={isReceive}
-                sincronize={() => sincronize}
+                sincronize={() => sincronize(false)}
                 isSincronize={isSincronize}
                 user={dataUser.name.split(' ')[0]}
                 search={search}
@@ -229,6 +252,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
     setSupplierData: (data: SuppliersTypes['data']) => dispatch({ type: 'SET_SUPPLIER_DATA', payload: { data } }),
     setLastCollect: (data: CollectionsTypes['lastCollect']) => dispatch({ type: 'SET_COLLECT_LAST', payload: { data } }),
+    setLoginData: (data: LoginTypes['data']) => dispatch({ type: 'SET_LOGIN_DATA', payload: { data } }),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

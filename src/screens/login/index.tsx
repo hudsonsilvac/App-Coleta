@@ -115,7 +115,8 @@ const Login: React.FC<IndexProps> = ({
             name: userSelected.NOME,
             dateLogin: getDateCurrent(),
             numCar: userSelected.NUMCAR,
-            idStore: storeSelected.CODIGO
+            idStore: storeSelected.CODIGO,
+            hourSync: getTimeCurrent()
         })
         navigation.navigate('Home')
     }
