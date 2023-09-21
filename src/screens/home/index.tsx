@@ -79,6 +79,12 @@ const Home: React.FC<IndexProps> = ({
     const [isSincronize, setIsSincronize] = useState<boolean>(false)
 
     useEffect(() => {
+        navigation.addListener('beforeRemove', (e) => {
+            e.preventDefault()
+        })
+    } ,[])
+
+    useEffect(() => {
         let timerNet = setInterval(() => {
             NetInfo.fetch().then(state => {
                 if (state.isConnected == false) setShowSincronize(false)
