@@ -51,7 +51,7 @@ const View: React.FC<ViewProps> = ({
             (listItemSelected === 0 || listItemSelected === 1)
             && (
                 <>
-                    <Text type='H3' text='Realizadas' weight='700' mt='20px' mb='20px' />
+                    <Text type='H3' text='Realizadas' weight='700' mt='20px' />
                     {
                         providersSuccess.map((item, index) => (
                             <BoxValue
@@ -69,7 +69,7 @@ const View: React.FC<ViewProps> = ({
             (listItemSelected === 0 || listItemSelected === 2)
             && (
                 <>
-                    <Text type='H3' text='Não iniciadas' weight='700' mt='20px' mb='20px' />
+                    <Text type='H3' text='Não iniciadas' weight='700' mt='20px' />
                     {
                         providersToCollect.map((item, index) => (
                             <BoxValue
@@ -87,7 +87,7 @@ const View: React.FC<ViewProps> = ({
             (listItemSelected === 0 || listItemSelected === 3)
             && (
                 <>
-                    <Text type='H3' text='Não realizadas' weight='700' mt='20px' mb='20px' />
+                    <Text type='H3' text='Não realizadas' weight='700' mt='20px' />
                     {
                         providersToDo.map((item, index) => (
                             <BoxValue

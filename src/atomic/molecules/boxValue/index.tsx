@@ -10,15 +10,13 @@ const BoxValue: React.FC<IndexProps> = ({
     text,
     value,
     onPress
-}) => {
-    return (
-        <Main onPress={onPress}>
-            <Box value={{ state: value.state}}>
-                <Text type='H4' text={value.description} color={white} weight='700' />
-            </Box>
-            <Text type='H4' text={text} ml='10px' />
-        </Main>
-    )
-}
+}) => (
+    <Main onPress={onPress}>
+        <Box value={{ state: value.state}}>
+            <Text type='H4' text={value.description} color={white} weight='700' />
+        </Box>
+        <Text type='H4' text={text} ml='10px' />
+    </Main>
+)
 
 export default BoxValue

@@ -6,11 +6,11 @@ import { IndexStyledProps } from "./models";
 
 export const Main = styled.TouchableOpacity`
     width: 100%;
-    height: 70px;
+    height: 55px;
     border-radius: ${borderRadius2};
     flex-direction: row;
     align-items: center;
-    padding: 10px;
+    padding: 10px 0;
 `
 
 export const Box = styled.View`
