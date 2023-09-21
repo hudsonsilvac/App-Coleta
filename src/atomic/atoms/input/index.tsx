@@ -1,9 +1,13 @@
 import React from "react";
 
-import { IndexProps } from "./models";
-import { Main, TextInput } from "./style";
 import Text from "../text";
 import { gray } from "../../constants/colors";
+
+import EyeOpen from '../../../assets/icons/eye.png'
+import EyeClosed from '../../../assets/icons/eyeClosed.png'
+
+import { IndexProps } from "./models";
+import { Eye, Main, TextInput, Touch } from "./style";
 
 const Input: React.FC<IndexProps> = ({
     width,
@@ -13,6 +17,7 @@ const Input: React.FC<IndexProps> = ({
     keyboardType = 'default',
     autoFocus,
     onPress,
+    setStatePassword,
     mt,
     ml,
     mr,
@@ -33,6 +38,13 @@ const Input: React.FC<IndexProps> = ({
                         autoFocus={autoFocus}
                         secureTextEntry={keyboardType === 'password'}
                     />
+                    {
+                        setStatePassword && (
+                            <Touch onPress={setStatePassword}>
+                                <Eye source={keyboardType === 'default' ? EyeOpen : EyeClosed} />
+                            </Touch>
+                        )
+                    }
                 </Main>
             )
 }

@@ -33,6 +33,8 @@ const View: React.FC<ViewProps> = ({
     setPassword,
     confirm,
     insertKM,
+    showPassword,
+    setShowPassword,
     isLoading
 }) => (
     <Main>
@@ -74,7 +76,8 @@ const View: React.FC<ViewProps> = ({
                     value={password}
                     onChangeText={setPassword}
                     placeholder='Senha'
-                    keyboardType='password'
+                    keyboardType={showPassword ? 'default' : 'password'}
+                    setStatePassword={() => setShowPassword(!showPassword)}
                     mb='30px'
                 />
             </BottomSheet>

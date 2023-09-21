@@ -1,6 +1,6 @@
 import styled from "styled-components/native";
 
-import { gray, black, grey } from "../../constants/colors";
+import { gray, black, grey, blackGrey } from "../../constants/colors";
 import { MarginsStyledProps } from "../../constants/spacing";
 import { IndexStyledProps } from "./models";
 
@@ -31,4 +31,19 @@ export const TextInput = styled.TextInput.attrs({
     flex: 1;
     text-align: ${( props: IndexStyledProps ) => ( props.textAlign ?? 'left' )};
     font-size: 21px;
+`
+
+export const Touch = styled.TouchableOpacity`
+    width: 30px;
+    height: 30px;
+    background-color: ${blackGrey};
+    border-radius: 7px;
+    justify-content: center;
+    align-items: center;
+`
+
+export const Eye = styled.Image`
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
 `

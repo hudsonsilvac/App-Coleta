@@ -12,6 +12,7 @@ export interface IndexProps extends Margins {
     keyboardType?: KeyboardType | 'password'
     autoFocus?: boolean;
     onPress?: () => void;
+    setStatePassword: () => void;
 }
 
 export type IndexStyledProps = StyledProps<IndexProps>

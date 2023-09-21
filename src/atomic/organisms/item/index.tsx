@@ -49,9 +49,6 @@ const Item: React.FC<IndexProps> = ({
                 <Text type='H4' text={description} weight='700' ml='15px' />
             </BoxCommon>
             <BoxCommon flex={0.5}>
-                <Text type='H4' text={prevision} weight='400' ml='15px' />
-            </BoxCommon>
-            <BoxCommon flex={0.5}>
                 <Input
                     value={text}
                     onChangeText={setText}

@@ -42,6 +42,8 @@ const Login: React.FC<IndexProps> = ({
 
     const [password, setPassword] = useState<string>('')
 
+    const [showPassword, setShowPassword] = useState<boolean>(false)
+
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
     useEffect(() => {
@@ -75,7 +77,7 @@ const Login: React.FC<IndexProps> = ({
             verifyKM()
             setShowModal(false)
         })
-        .catch(() => Alert.alert('Falha ao entrar', 'Usuário ou senha incorretos!'))
+        .catch((res) => Alert.alert('Falha ao entrar', res))
     }
 
     const verifyKM = () => {
@@ -144,6 +146,8 @@ const Login: React.FC<IndexProps> = ({
             setPassword={setPassword}
             confirm={confirm}
             insertKM={insertKM}
+            showPassword={showPassword}
+            setShowPassword={setShowPassword}
             isLoading={isLoading}
         />
     )

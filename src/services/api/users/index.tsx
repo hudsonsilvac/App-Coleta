@@ -8,9 +8,9 @@ const login = ({ matricula, password }: IndexType) => {
             let res:LoginProps = response.data
 
             if (res.status == true) resolve(true)
-            else reject(false)
+            else reject(res.mensagem)
         })
-        .catch((response) => reject(response))
+        .catch((response) => reject(response.mensagem))
     })
 }
 
