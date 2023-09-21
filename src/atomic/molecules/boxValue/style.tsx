@@ -1,7 +1,7 @@
 import styled from "styled-components/native";
 
 import { borderRadius2 } from "../../constants/button";
-import { grey, normal, primary, success } from "../../constants/colors";
+import { normal, primary, success } from "../../constants/colors";
 import { IndexStyledProps } from "./models";
 
 export const Main = styled.TouchableOpacity`
@@ -10,7 +10,7 @@ export const Main = styled.TouchableOpacity`
     border-radius: ${borderRadius2};
     flex-direction: row;
     align-items: center;
-    padding: 10px 0;
+    padding: 0px 0;
 `
 
 export const Box = styled.View`

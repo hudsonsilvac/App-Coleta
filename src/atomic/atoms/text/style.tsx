@@ -50,7 +50,7 @@ export const H3 = styled.Text`
 
 export const H4 = styled.Text`
     font-family: 'LexendDeca-Regular';
-    font-size: 20px;
+    font-size: 19px;
     font-weight: ${( props: TextWeightStyledProps ) => ( props.weight ?? '400' )};
     color: ${( props: IndexStyledProps ) => (props.color ?? black)};
     letter-spacing: ${spacing};
