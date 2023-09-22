@@ -77,7 +77,7 @@ const Login: React.FC<IndexProps> = ({
             verifyKM()
             setShowModal(false)
         })
-        .catch((res) => Alert.alert('Falha ao entrar', res))
+        .catch((res) => Alert.alert('Falha ao entrar', res ?? 'Sem conexão com API'))
     }
 
     const verifyKM = () => {
