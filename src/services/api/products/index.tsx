@@ -12,7 +12,7 @@ const listAll = ({ codMotorista, codFilial }: IndexType) => {
                 let json: ProductsProps = {
                     CODPROD: res[i].CODPROD,
                     CODFORNEC: res[i].CODFORNEC,
-                    COLETA: res[i].COLETA,
+                    COLETA: res[i].QTCOLETADA || '0',
                     DESCRICAO: res[i].DESCRICAO,
                     PCOMPRA: res[i].PCOMPRA,
                     QTPREVISAO: res[i].QTPREVISAO

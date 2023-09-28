@@ -157,6 +157,8 @@ const Collect: React.FC<IndexProps> = ({
         await BluetoothEscposPrinter.printText('================================', options);
         let total = currency(items.reduce((valor, total) => Number(valor) + Number(total.value), 0), 2, 3, '.', ',');
         await BluetoothEscposPrinter.printText(total.padStart(32, ' '), { ...options, fonttype: 1, });
+        await BluetoothEscposPrinter.printText('================================', options);
+        await BluetoothEscposPrinter.printText(`          PSA APLICATIVOS`, { ...options, fonttype: 1, });
         await BluetoothEscposPrinter.printText('\r\n\r\n\r\n', {});
 
         setLoadingConfirm(false)
@@ -195,6 +197,8 @@ const Collect: React.FC<IndexProps> = ({
         await BluetoothEscposPrinter.printText('================================', options);
         let total = currency(items.reduce((valor, total) => Number(valor) + Number(total.value), 0), 2, 3, '.', ',');
         await BluetoothEscposPrinter.printText(total.padStart(32, ' '), { ...options, fonttype: 1, });
+        await BluetoothEscposPrinter.printText('================================', options);
+        await BluetoothEscposPrinter.printText(`          PSA APLICATIVOS`, { ...options, fonttype: 1, });
         await BluetoothEscposPrinter.printText('\r\n\r\n\r\n', {});
     }
 

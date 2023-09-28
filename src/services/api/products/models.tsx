@@ -10,4 +10,5 @@ export interface ProductsProps {
     QTPREVISAO: string;
     PCOMPRA: string;
     COLETA: string;
+    QTCOLETADA?: string
 }
