@@ -21,7 +21,8 @@ const Item: React.FC<IndexProps> = ({
     }, [description])
 
     useEffect(() => {
-        setValue(text)
+        setText(text.replace(',', '.'))
+        setValue(text.replace(',', '.'))
     }, [text])
 
     const generateIcon = () => {
