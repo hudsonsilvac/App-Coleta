@@ -9,6 +9,7 @@ export interface IndexProps {
     lastCollect: CollectionsTypes['lastCollect']
     setLastCollect: (lastCollect: CollectionsTypes['lastCollect']) => void;
     setLoginData: (data: LoginTypes['data']) => void;
+    setIsSincronized: (data: CollectionsTypes['sincronized']) => void
 }
 
 export interface ViewProps {

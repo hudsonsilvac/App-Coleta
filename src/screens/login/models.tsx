@@ -1,12 +1,17 @@
 import { StoresProps, UsersProps } from "../../services/api/users/models";
+import { CollectionsTypes } from "../../services/redux/reducers/collections/models";
 import { LoginTypes } from "../../services/redux/reducers/login/models";
 
 export interface IndexProps {
     userData: LoginTypes['data']
     setLoginData: (data: LoginTypes['data']) => void;
+    isSincronized: CollectionsTypes['sincronized']
+    setIsSincronized: (state: CollectionsTypes['sincronized']) => void
 }
 
 export interface ViewProps {
+    start: () => void
+
     showModal: boolean;
     setShowModal: (state: boolean) => void;
 
@@ -36,4 +41,5 @@ export interface ViewProps {
     setShowPassword: (state: boolean) => void;
 
     isLoading: boolean;
+    isLoadingSincronized: boolean;
 }

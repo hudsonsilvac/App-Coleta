@@ -13,6 +13,7 @@ import Input from "../../atomic/atoms/input";
 import { ViewProps } from "./models";
 
 const View: React.FC<ViewProps> = ({
+    start,
     showModal,
     setShowModal,
     showStores,
@@ -35,13 +36,14 @@ const View: React.FC<ViewProps> = ({
     insertKM,
     showPassword,
     setShowPassword,
-    isLoading
+    isLoading,
+    isLoadingSincronized
 }) => (
     <Main>
         <Background source={Bg} justifyContent='flex-end'>
             <Text type='H1' text={`Vamos\ncomeçar?`} color={white} align='center' />
             <Text type='H3' text='Colete da maneira certa' color={white} align='center' mt='30px' mb='30px' />
-            <Button text='Começar a coletar' onPress={() => setShowModal(true)} />
+            <Button text='Começar a coletar' isLoading={isLoadingSincronized} onPress={start} />
             <BottomSheet
                 title='Entrar'
                 visible={showModal}

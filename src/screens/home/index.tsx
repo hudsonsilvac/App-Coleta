@@ -27,7 +27,7 @@ import collections from "../../services/api/collections";
 import { Alert } from "react-native";
 import { sincronizeDB } from "../../constants/sincronize";
 import { ItemsType } from "../../services/api/collections/models";
-import { getTimeCurrent } from "../../constants/date";
+import { getDateCurrent, getTimeCurrent } from "../../constants/date";
 
 const List: ListDataType[] = [
     {
@@ -59,7 +59,8 @@ const Home: React.FC<IndexProps> = ({
     setSupplierData,
     lastCollect,
     setLastCollect,
-    setLoginData
+    setLoginData,
+    setIsSincronized,
 }) => {
     const navigation = useNavigation<NativeStackNavigationProp<StackProps>>()
 
@@ -82,6 +83,10 @@ const Home: React.FC<IndexProps> = ({
         navigation.addListener('beforeRemove', (e) => {
             e.preventDefault()
         })
+
+        if (dataUser.dateLogin != getDateCurrent()) {
+            navigation.navigate('Login')
+        }
     } ,[])
 
     useEffect(() => {
@@ -193,6 +198,7 @@ const Home: React.FC<IndexProps> = ({
                     setLastCollect('1')
                 }, 10000);
             } else {
+                setIsSincronized(true)
                 Alert.alert('Sincronização', 'Sincronização concluída com sucesso!')
                 setIsSincronize(false)
             }
@@ -212,13 +218,43 @@ const Home: React.FC<IndexProps> = ({
 
     const loadData = () => {
         DBCollections.listToCollect()
-        .then((data: SuppliersTypes['data'][]) => setSupplierToCollect(data))
+        .then((data: SuppliersTypes['data'][]) => {
+            const set = new Set()
+
+            let newData = data.filter(item => {
+                const duplicatedPerson = set.has(item.CODFORNEC);
+                set.add(item.CODFORNEC);
+                return !duplicatedPerson;
+            })
+
+            setSupplierToCollect(newData)
+        })
         
         DBCollections.listToDo()
-        .then((data: SuppliersTypes['data'][]) => setSupplierToDo(data))
+        .then((data: SuppliersTypes['data'][]) => {
+            const set = new Set()
+
+            let newData = data.filter(item => {
+                const duplicatedPerson = set.has(item.CODFORNEC);
+                set.add(item.CODFORNEC);
+                return !duplicatedPerson;
+            })
+
+            setSupplierToDo(newData)
+        })
 
         DBCollections.listSuccess()
-        .then((data: SuppliersTypes['data'][]) => setSupplierSuccess(data))
+        .then((data: SuppliersTypes['data'][]) => {
+            const set = new Set()
+
+            let newData = data.filter(item => {
+                const duplicatedPerson = set.has(item.CODFORNEC);
+                set.add(item.CODFORNEC);
+                return !duplicatedPerson;
+            })
+
+            setSupplierSuccess(newData)
+        })
     }
 
     return (
@@ -259,6 +295,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     setSupplierData: (data: SuppliersTypes['data']) => dispatch({ type: 'SET_SUPPLIER_DATA', payload: { data } }),
     setLastCollect: (data: CollectionsTypes['lastCollect']) => dispatch({ type: 'SET_COLLECT_LAST', payload: { data } }),
     setLoginData: (data: LoginTypes['data']) => dispatch({ type: 'SET_LOGIN_DATA', payload: { data } }),
+    setIsSincronized: (data: CollectionsTypes['sincronized']) => dispatch({ type: 'SET_SINCRONIZED', payload: { data } }),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

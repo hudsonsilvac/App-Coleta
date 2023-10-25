@@ -5,6 +5,7 @@ import { SuppliersTypes } from "../../services/redux/reducers/suppliers/models";
 export interface IndexProps {
     dataSupplier: SuppliersTypes['data']
     setLastCollect: (lastCollect: CollectionsTypes['lastCollect']) => void;
+    setIsSincronized: (data: CollectionsTypes['sincronized']) => void
 }
 
 export interface ViewProps {

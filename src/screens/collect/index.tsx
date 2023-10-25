@@ -41,7 +41,8 @@ const options: PrintTextOptions = {
 
 const Collect: React.FC<IndexProps> = ({
     dataSupplier,
-    setLastCollect
+    setLastCollect,
+    setIsSincronized
 }) => {
     const navigation = useNavigation<NativeStackNavigationProp<StackProps>>()
 
@@ -90,7 +91,15 @@ const Collect: React.FC<IndexProps> = ({
                 price: item.PCOMPRA || '0'
             }))
 
-            setItems(dataProduct)
+            const set = new Set()
+
+            let newData = dataProduct.filter(item => {
+                const duplicatedPerson = set.has(item.id);
+                set.add(item.id);
+                return !duplicatedPerson;
+            })
+
+            setItems(newData)
         })
     }
 
@@ -118,6 +127,7 @@ const Collect: React.FC<IndexProps> = ({
 
         setLoadingConfirm(true)
         setLastCollect(dataSupplier.CODORDEMCOLETA)
+        setIsSincronized(false)
 
         DBCollections.update({
             TIPO: '1',
@@ -263,7 +273,8 @@ const mapStateToProps = ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-    setLastCollect: (lastCollect: CollectionsTypes['lastCollect']) => dispatch({ type: 'SET_COLLECT_LAST', payload: { lastCollect } })
+    setLastCollect: (lastCollect: CollectionsTypes['lastCollect']) => dispatch({ type: 'SET_COLLECT_LAST', payload: { lastCollect } }),
+    setIsSincronized: (sincronized: CollectionsTypes['sincronized']) => dispatch({ type: 'SET_SINCRONIZED', payload: { sincronized } }),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Collect);
