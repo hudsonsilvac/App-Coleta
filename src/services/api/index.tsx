@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "http://cloud.ntiamerica.inf.br:55472/v1/",
+    baseURL: "https://apicoleta.hostnetprovedor.com.br:8090/api/",
     headers: {
         'Content-Type': 'application/json'
     }
