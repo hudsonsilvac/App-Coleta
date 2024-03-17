@@ -74,7 +74,7 @@ const Collect: React.FC<IndexProps> = ({
                     }
                 }
 
-                await BluetoothManager.connect(paired[0].address)
+                await BluetoothManager.connect(paired.find(item => item.name === 'IposPrinter').address)
             },
             (err) => Alert.alert('Enable Bluetooth', err)
         );

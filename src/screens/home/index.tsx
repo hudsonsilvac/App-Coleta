@@ -93,9 +93,11 @@ const Home: React.FC<IndexProps> = ({
         let timerNet = setInterval(() => {
             NetInfo.fetch().then(state => {
                 if (state.isConnected == false) setShowSincronize(false)
-                else setShowSincronize(true)
+                else {
+                    setShowSincronize(true)
+                    syncAuto()
+                }
             });
-            syncAuto()
         }, delay * 1000);
 
         return () => clearInterval(timerNet)
@@ -129,7 +131,8 @@ const Home: React.FC<IndexProps> = ({
         if (!receive)
             setIsSincronize(true)
 
-        DBCollections.listSuccess()
+        DBCollections
+        .listSuccess()
         .then(async (data: SuppliersTypes['data'][]) => {
             data.map(item => {
                 let codOrdemColeta: string, DTULAlteracao: string, dtHoraColeta: string, data: string, dtHoraStatus: string, numCar: string
@@ -183,26 +186,20 @@ const Home: React.FC<IndexProps> = ({
                 })
             })
         })
-
-        if (receive) {
-            DBCollections.deleteAll()
-            DBProducts.deleteAll()
-        }
-
-        setTimeout(() => {
+        .then(() => {
             if (receive) {
-                sincronizeDB(dataUser.id, dataUser.idStore)
-                setTimeout(() => {
-                    setIsReceive(false)
-                    Alert.alert('Sucesso', 'Dados recebidos com sucesso!')
-                    setLastCollect('1')
-                }, 10000);
+                DBCollections
+                .deleteAll()
+                .then(() => {
+                    sincronizeDB(dataUser.id, dataUser.idStore)
+                    DBProducts.deleteAll()
+                })
             } else {
                 setIsSincronized(true)
                 Alert.alert('Sincronização', 'Sincronização concluída com sucesso!')
                 setIsSincronize(false)
             }
-        }, 10000);
+        })
     }
 
     const [isReceive, setIsReceive] = useState<boolean>(false)
