@@ -107,21 +107,21 @@ const Home: React.FC<IndexProps> = ({
         let time = Number(dataUser.hourSync.split(':')[0])
         let currentTime = Number(getTimeCurrent().split(':')[0])
 
-        if (currentTime > time || currentTime <= 5) {
-            setLoginData({
-                id: dataUser.id,
-                name: dataUser.name,
-                dateLogin: dataUser.dateLogin,
-                numCar: dataUser.numCar,
-                idStore: dataUser.idStore,
-                hourSync: getTimeCurrent()
-            })
+        // if (currentTime > time || currentTime <= 5) {
+        //     setLoginData({
+        //         id: dataUser.id,
+        //         name: dataUser.name,
+        //         dateLogin: dataUser.dateLogin,
+        //         numCar: dataUser.numCar,
+        //         idStore: dataUser.idStore,
+        //         hourSync: getTimeCurrent()
+        //     })
 
-            sincronize(false)
-            setTimeout(() => {
-                sincronize(true)
-            }, 3000);
-        }
+        //     sincronize(false)
+        //     setTimeout(() => {
+        //         sincronize(true)
+        //     }, 3000);
+        // }
     }
 
     const sincronize = (receive: boolean) => {

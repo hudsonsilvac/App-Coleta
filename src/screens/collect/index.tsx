@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert } from "react-native";
+import { Alert, PermissionsAndroid } from "react-native";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { BluetoothManager, BluetoothEscposPrinter, PrintTextOptions } from "tp-react-native-bluetooth-printer";
@@ -55,29 +55,41 @@ const Collect: React.FC<IndexProps> = ({
     const [items, setItems] = useState<ItemType[]>([])
     const [isInsert, setIsInsert] = useState<boolean>(false)
 
+    const [usePrinter, setUserPrinter] = useState<boolean>(false)
+
     useEffect(() => {
         connect()
         listData()
     }, [])
 
-    const connect = () => {
-        BluetoothManager.enableBluetooth().then(
-            async (r) => {
-                var paired = [];
-                if (r && r.length > 0) {
-                    for (var i = 0; i < r.length; i++) {
-                    try {
-                        paired.push(JSON.parse(r[i]));
-                    } catch (e) {
-                        Alert.alert('Paired Printers', e)
-                    }
-                    }
-                }
-
-                await BluetoothManager.connect(paired.find(item => item.name === 'IposPrinter').address)
-            },
-            (err) => Alert.alert('Enable Bluetooth', err)
-        );
+    const connect = async () => {
+        PermissionsAndroid
+        .check(PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT)
+        .then((res: boolean) => {
+            if (res) {
+                BluetoothManager.enableBluetooth().then(
+                    async (r: any) => {
+                        var paired = [];
+                        if (r && r.length > 0) {
+                            for (var i = 0; i < r.length; i++) {
+                                try {
+                                    paired.push(JSON.parse(r[i]));
+                                } catch (e: any) {
+                                    Alert.alert('Paired Printers', e)
+                                }
+                            }
+                        }
+        
+                        await BluetoothManager.connect(paired.find(item => item.name === 'IposPrinter').address)
+                        setUserPrinter(true)
+                    },
+                    (err: any) => Alert.alert('Enable Bluetooth', err)
+                )
+                Alert.alert('Aviso!', 'Nenhuma impressora detectada!')
+            } else {
+                Alert.alert('Aviso!', 'Você precisa ativar a permissão de Dispositivos para um melhor funcionamento da impressora!')
+            }
+        })
     }
 
     const listData = () => {
@@ -146,6 +158,13 @@ const Collect: React.FC<IndexProps> = ({
             }
         }
 
+        if (!usePrinter) {
+            setLoadingConfirm(false)
+            setShowModal(false)
+            navigation.navigate('Success')
+            return
+        }
+
         await BluetoothEscposPrinter.printText('--------------------------------', options);
         await BluetoothEscposPrinter.printText(`${dataSupplier.FILIAL.padStart(21, ' ')}`, options);
         await BluetoothEscposPrinter.printText('--------------------------------', options);
@@ -186,6 +205,8 @@ const Collect: React.FC<IndexProps> = ({
     }
 
     const print = async () => {
+        if (!usePrinter) return
+
         await BluetoothEscposPrinter.printText('--------------------------------', options);
         await BluetoothEscposPrinter.printText(`${dataSupplier.FILIAL.padStart(21, ' ')}`, options);
         await BluetoothEscposPrinter.printText('--------------------------------', options);

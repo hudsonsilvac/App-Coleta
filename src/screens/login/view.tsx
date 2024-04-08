@@ -44,6 +44,7 @@ const View: React.FC<ViewProps> = ({
             <Text type='H1' text={`Vamos\ncomeçar?`} color={white} align='center' />
             <Text type='H3' text='Colete da maneira certa' color={white} align='center' mt='30px' mb='30px' />
             <Button text='Começar a coletar' isLoading={isLoadingSincronized} onPress={start} />
+            <Text type='H5' text='Versão 2.0.3' color={white} align='center' mt='30px' mb='30px' />
             <BottomSheet
                 title='Entrar'
                 visible={showModal}
